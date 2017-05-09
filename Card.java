@@ -1,19 +1,49 @@
 // Card.java
 
+import java.util.*;
+
 public class Card{
 
    private String name;
    private boolean flipped;
    private int budget;
    private int roleCount;
-   private Role roles[];
+   private ArrayList<Role> roles = new ArrayList<Role>();
 
-   // Card constructor
-   public Card(String name, int roleCount, int budget){
+   // constructor for single role cards
+   public Card(String name, int roleCount, int budget, Role role0){
       this.name = name;
       this.roleCount = roleCount;
       this.budget = budget;
       flipped = false;
+
+      // add the given role to the arraylist of roles for the card
+      roles.add(role0);
+   }
+
+   // constructor for double role cards
+   public Card(String name, int roleCount, int budget, Role role0, Role role1){
+      this.name = name;
+      this.roleCount = roleCount;
+      this.budget = budget;
+      flipped = false;
+
+      // add the given roles to the arraylist of roles for the card
+      roles.add(role0);
+      roles.add(role1);
+   }
+
+   // constructor for triple role cards
+   public Card(String name, int roleCount, int budget, Role role0, Role role1, Role role2){
+      this.name = name;
+      this.roleCount = roleCount;
+      this.budget = budget;
+      flipped = false;
+
+      // add the given roles to the arraylist of roles for the card
+      roles.add(role0);
+      roles.add(role1);
+      roles.add(role2);
    }
 
 ////////////////////////////////////////////////////////////////////
