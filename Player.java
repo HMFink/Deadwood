@@ -15,9 +15,9 @@ public class Player{
       idNumber = num;
       money = 0;
       credit = 0;
-      level = 0;
+      level = 1;
       rehearsals = 0;
-      room = null;
+      room = "Trailer";
       role = null;
    }
 
