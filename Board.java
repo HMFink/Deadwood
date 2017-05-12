@@ -1,7 +1,9 @@
 // Board.java
 
 public class Board{
-
+   // Fields
+   Room rooms[12]; // hardcode the list of rooms?
+   
    // Board constructor
    public Board(){}
 
