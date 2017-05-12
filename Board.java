@@ -7,18 +7,18 @@ public class Board{
 
    // update the Board display
    public void update(String keyword, int x, int y){
-      if (strcmp(keyword, position)==0) {
+      if (keyword.equalsIgnoreCase(position) {
          // when a players position needs to be updated
          System.out.println("Players new position is, (%d, %d)", x, y);
-      } else if (strcmp(keyword, level)==0) {
+      } else if (keyword.equalsIgnoreCase(level)) {
          // when a players level is upgraded
          System.out.println("Players old level was %d and new level is %d)", x, y);
-      } else if (strcmp(keyword, takeRole)==0) {
+      } else if (keyword.equalsIgnoreCase(takeRole)) {
          // when a player takes a role
          // get role name
          String name = getName();
          System.out.println("Players new role is, %s", name);
-      } else if (strcmp(keyword, endScene)==0) {
+      } else if (keyword.equalsIgnoreCase(endScene)) {
          // when a scene ends and all players are moved off of the roles
          System.out.println("All players in ended scene have moved to, (%d, %d)", x, y);
       } else {
