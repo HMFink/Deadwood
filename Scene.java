@@ -7,9 +7,13 @@ public class Scene extends Room {
 	int shotCount;
 	int budget;
 	// Constructor
-	Scene (int shots) {
+	Scene (int shots, int numPlayers) {
 		shotCount = shots;
 		roleOffCard = new ArrayList<Role>();
+		// add 0 for absent
+		for (int i=0; i<numPlayers; i++) {
+			present[i]=0;
+		}
 	}
 	// Methods
 	boolean ActRoll (int playerNum, int rehearseCount) {

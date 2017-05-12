@@ -40,7 +40,7 @@ public class Player{
    }
 
    // getter and setter for player credit
-   public int getCredit(int amount){
+   public int getCredit(){
       return credit;
    }
    

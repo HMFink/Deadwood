@@ -3,24 +3,82 @@
  ***********************/
 
 import org.eclipse.swt.SWT;
-//import org.eclipse.swt.events.SelectionAdapter;
-//import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
-//import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-//import org.eclipse.swt.widgets.Text;
 
-public class DeadwoodText {
+public class Deadwood {
 
 	public static void main(String[] args) {
-		// test of display
+		// Start the game
 		Display display = new Display();
 		Shell shell = new Shell(display);
 		shell.setLayout(new FillLayout());
-		shell.setText("Please enter the number of players");
-		new Button(shell, SWT.RADIO);
+		shell.setText("Deadwood");
+		// 2-3 players and 3 days
+		Button twoPlay = new Button(shell, SWT.PUSH);
+		twoPlay.setText("2");
+		twoPlay.addSelectionListener(new SelectionAdapter() {
+		    @Override
+		    public void widgetSelected(SelectionEvent e) {
+		        Controller game = new Controller(2);
+		    }
+		});
+		Button threePlay = new Button(shell, SWT.PUSH);
+		threePlay.setText("3");
+		threePlay.addSelectionListener(new SelectionAdapter() {
+		    @Override
+		    public void widgetSelected(SelectionEvent e) {
+		    	Controller game = new Controller(3);
+		    }
+		});
+		// 4 players and 4 days
+		Button fourPlay = new Button(shell, SWT.PUSH);
+		fourPlay.setText("4");
+		fourPlay.addSelectionListener(new SelectionAdapter() {
+		    @Override
+		    public void widgetSelected(SelectionEvent e) {
+		    	Controller game = new Controller(4);
+		    }
+		});
+		// 5 players and 4 days (2 credit bonus)
+		Button fivePlay = new Button(shell, SWT.PUSH);
+		fivePlay.setText("5");
+		fivePlay.addSelectionListener(new SelectionAdapter() {
+		    @Override
+		    public void widgetSelected(SelectionEvent e) {
+		    	Controller game = new Controller(5);
+		    }
+		});
+		// 6 players and 4 days (4 credit bonus)
+		Button sixPlay = new Button(shell, SWT.PUSH);
+		sixPlay.setText("6");
+		sixPlay.addSelectionListener(new SelectionAdapter() {
+		    @Override
+		    public void widgetSelected(SelectionEvent e) {
+		    	Controller game = new Controller(6);
+		    }
+		});
+		// 7-8 players and 4 days (start at rank 2)
+		Button sevenPlay = new Button(shell, SWT.PUSH);
+		sevenPlay.setText("7");
+		sevenPlay.addSelectionListener(new SelectionAdapter() {
+		    @Override
+		    public void widgetSelected(SelectionEvent e) {
+		    	Controller game = new Controller(7);
+		    }
+		});
+		Button eightPlay = new Button(shell, SWT.PUSH);
+		eightPlay.setText("8");
+		eightPlay.addSelectionListener(new SelectionAdapter() {
+		    @Override
+		    public void widgetSelected(SelectionEvent e) {
+		    	Controller game = new Controller(8);
+		    }
+		});
 		shell.open();
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
@@ -28,24 +86,6 @@ public class DeadwoodText {
 			}
 		}
 		display.dispose();
-		
-		// skeleton of the actual program
 	}
 
 }
-
-/* NOTES *****************************************************************************************************
- * Command				Action
- * ***********************************************************************************************************
- * who					The software identifies the current player and any parts that the player is working.
- * Where				The software describes the current player’s room and any active scenes.
- * move (room)			The current player moves to the indicated room.
- * work (part)			The current player takes the indicated role.
- * upgrade ($ level) 	Upgrade the current player to the indicated level
- * upgrade (cr level)	Upgrade the current player to the indicated level.
- * Rehearse 			The current player rehearses
- * act 					The current player performs in its current role.
- * end					End the current player’s turn 
- * 
- * HELP: http://www.vogella.com/tutorials/SWT/article.html
- *************************************************************************************************************/

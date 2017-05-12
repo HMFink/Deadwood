@@ -7,13 +7,11 @@ public class Card{
    private String name;
    private boolean flipped;
    private int budget;
-   private int roleCount;
    private ArrayList<Role> roles = new ArrayList<Role>();
 
    // constructor for single role cards
-   public Card(String name, int roleCount, int budget, Role role0){
+   public Card(String name, int budget, Role role0){
       this.name = name;
-      this.roleCount = roleCount;
       this.budget = budget;
       flipped = false;
 
@@ -22,9 +20,8 @@ public class Card{
    }
 
    // constructor for double role cards
-   public Card(String name, int roleCount, int budget, Role role0, Role role1){
+   public Card(String name, int budget, Role role0, Role role1){
       this.name = name;
-      this.roleCount = roleCount;
       this.budget = budget;
       flipped = false;
 
@@ -34,9 +31,8 @@ public class Card{
    }
 
    // constructor for triple role cards
-   public Card(String name, int roleCount, int budget, Role role0, Role role1, Role role2){
+   public Card(String name, int budget, Role role0, Role role1, Role role2){
       this.name = name;
-      this.roleCount = roleCount;
       this.budget = budget;
       flipped = false;
 
