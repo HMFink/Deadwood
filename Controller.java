@@ -7,7 +7,6 @@ import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
 
-
 public class Controller{
 
    private int day = 0;
