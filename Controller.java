@@ -1,6 +1,12 @@
 // Controller.java
 
 import java.util.*;
+import java.io.IOException;
+import javax.xml.parsers.*;
+import org.w3c.dom.*;
+import org.xml.sax.SAXException;
+
+
 
 public class Controller{
 
@@ -19,18 +25,96 @@ public class Controller{
       createRooms();
    }
 
-   private void createPlayers () {
-	   for (int i=0; i<playerCount; i++) {
+   private void createPlayers(){
+	   for (int i=0; i<playerCount; i++){
 
 	   }
    }
 
-   private void createRooms () {
+   private void createRooms(int numPlayers){
 	   // create all rooms
 	   CastingOffice office = new CastingOffice(playerCount);
 	   Trailer start = new Trailer(playerCount);
 	   Board gameBoard = new Board();
-   }
+
+      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+      try{
+         DocumentBuilder builder = factory.newDocumentBuilder();
+         Document doc = builder.parse("board.xml");
+
+         NodeList roomList = doc.getElementsByTagName("*");
+
+         String sceneName = "";
+         int shotCount = 0;
+         int playerCount = numPlayers;
+         ArrayList<String> neighbors = new ArrayList<String>();
+         ArrayList<Role> offCardRoles = new ArrayList<Role>();
+
+         String roleName = "";
+         String roleLevel = "";
+         String roleLine = "";
+
+         boolean create = false;
+
+         int createCount = 0;
+
+         for (int i = 0; i < roomList.getLength(); i++){
+
+            Node roomNode = roomList.item(i);
+            Element room = (Element) roomNode;
+
+            // name of scene
+            if (room.getTagName().equals("set")){
+               if (create == true){
+                  Scene current = new Scene(sceneName, shotCount, numPlayers, neighbors, offCardRoles);
+                  scenes.add(current);
+                  offCardRoles.clear();
+                  neighbors.clear();
+                  createCount++;
+               }
+               sceneName = room.getAttribute("name");
+               create = true;
+            }
+            else if (room.getTagName().equals("neighbor")){
+               String neighbor = room.getAttribute("name");
+               neighbors.add(neighbor);
+            }
+            else if (room.getTagName().equals("take")){
+               String tempCount = room.getAttribute("number");
+               int currCount = Integer.valueOf(tempCount);
+               if (currCount > shotCount){
+                  shotCount = currCount;
+               }
+            }
+            else if (room.getTagName().equals("part")){
+               roleName = room.getAttribute("name");
+               roleLevel = room.getAttribute("level");
+               int level = Integer.valueOf(roleLevel);
+               roleLine = room.getTextContent();
+               Role role = new Role(level, false, roleName, roleLine);
+               offCardRoles.add(role);
+            }
+
+         }
+
+         Scene current = new Scene(sceneName, shotCount, numPlayers, neighbors, offCardRoles);
+         scenes.add(current);
+         offCardRoles.clear();
+         neighbors.clear();
+         createCount++;
+         System.out.println("number of scenes created: " + createCount);
+
+      }
+      catch(ParserConfigurationException ex){
+         ex.printStackTrace();
+      }
+      catch(SAXException ex){
+         ex.printStackTrace();
+      }
+      catch(IOException ex){
+         ex.printStackTrace();
+      }
+   }// end createRooms()
 
    public void decrementScene(){
       sceneCount--;
