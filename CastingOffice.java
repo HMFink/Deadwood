@@ -50,11 +50,11 @@ public class CastingOffice extends Room {
 				p.setLevel(level);
 			} else {
 				// display error message and continue
-				//dispMessage("Not enough credits/money. Try again with other type.");
+				System.out.println("Not enough credits/money. Try again with other type.");
 			}
 		} else {
 			// display error message and continue
-			//dispMessage("Not in the casting office!");
+			System.out.println("Not in the casting office!");
 		}
 	}
 	boolean CheckMoneyCredit (int amount, int level, int type) {
