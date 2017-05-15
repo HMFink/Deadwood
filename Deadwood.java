@@ -61,9 +61,18 @@ public class Deadwood {
 						System.out.println("Invalid role!");
 					}
           			} else if (command.equals("act")){
-            				System.out.println("acted!");
+            				System.out.println("Acted!");
+          			} else if (command.equals("rehearse")){
+            				System.out.println("");
           			} else if (command.equals("upgrade")){
-            				System.out.println("leveled up!");
+            				System.out.println("Leveled up!");
+          			} else if (command.equals("who")){
+            				System.out.println("");
+          			} else if (command.equals("where")){
+            				System.out.println("");
+          			} else if (command.equals("end")){
+            				System.out.println("Turn ended");
+					valid = true;
           			} else {
             				System.out.println("Invalid command! please enter one of the options listed above.");
             			}
