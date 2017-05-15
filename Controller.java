@@ -35,7 +35,7 @@ public class Controller{
       Scanner in = new Scanner(System.in);
       String name;
       // Get player names
-      for (int i=0; i<playerCount; i++){
+      for (int i=1; i<=playerCount; i++){
           System.out.print("Enter player " + i + "'s name: ");
 	  name = in.next();
 	  player.add(new Player(i, name));
