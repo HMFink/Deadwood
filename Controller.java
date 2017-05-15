@@ -14,6 +14,7 @@ public class Controller{
    private int playerCount = 0;
    private static ArrayList<Card> cards;
    private static ArrayList<Scene> scenes;
+   private static ArrayList<Player> players;
    private static int currentCard;
 
    // Controller constructor
@@ -30,9 +31,13 @@ public class Controller{
    }
 
    private void createPlayers(){
-	   for (int i=0; i<playerCount; i++){
-
-	   }
+      String name;
+      for (int i=0; i<playerCount; i++){
+          System.out.print("Enter player " + i + "'s name: ");
+	  name = in.next();
+	  player.add(new Player(i, name));
+	  System.out.println();
+      }
    }
 
 
