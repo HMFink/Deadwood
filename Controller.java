@@ -17,10 +17,9 @@ public class Controller{
    private static int currentCard;
 
    // Controller constructor
-   public Controller(int num){
+   private Controller(){
       day = 0;
       sceneCount = 10;
-      playerCount = num;
       cards = new ArrayList<Card>();
       scenes = new ArrayList<Scene>();
       createCards();
@@ -41,6 +40,11 @@ public class Controller{
       sceneCount--;
    }
 
+   public void startGame (int numPlaying) {
+	playerCount = numPlaying;
+   	Controller game = new Controller();
+   }
+	
    public void startDay () {
 	    for (int i = 0; i < 10; i++){
         scenes.get(i).ChangeCard(cards.get(currentCard));
