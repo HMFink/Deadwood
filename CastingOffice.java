@@ -1,15 +1,31 @@
+import java.util.ArrayList;
+
 public class CastingOffice extends Room {
+
 	// Fields
+	private int present[];
 	final int money[] = {4, 10, 18, 28, 40};
 	final int credit[] = {5, 10, 15, 20, 25};
+	private ArrayList<String> neighbors;
+
 	// Constructor
 	CastingOffice (int numPlayers) {
 		// add 0 for absent
+		neighbors = new ArrayList<String>();
+		neighbors.add("Train Station");
+		neighbors.add("Ranch");
+		neighbors.add("Secret Hideout");
+		present = new int[numPlayers];
 		for (int i=0; i<numPlayers; i++) {
 			present[i]=0;
 		}
+
 	}
 	// Methods
+	public ArrayList<String> getNeighbors(){
+		return neighbors;
+	}
+
 	void Upgrade (Player p, int level, int type) {
 		// variables
 		int amt = 0;

@@ -8,6 +8,8 @@ public class Scene extends Room {
 	int shotCount;
 	int budget;
 	ArrayList<String> neigbors;
+	Card card;
+
 	// Constructor
 	Scene (String name, int shots, int numPlayers, ArrayList<String> neighbors, ArrayList<Role> offCardRoles){
 		this.name = name;
@@ -33,9 +35,13 @@ public class Scene extends Room {
 	void AssignReward (ArrayList<Integer> diceRolls) {
 		// increments each players money
 	}
+
 	void ChangeCard(Card card) {
-		// changes on card roles and budget
-		budget = card.getBudget();
-		roleOnCard = card.getRoles();
+		// assigns a card to a scene
+		this.card = card;
+	}
+
+	public Card getCard(){
+		return card;
 	}
 }

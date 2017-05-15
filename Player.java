@@ -7,7 +7,7 @@ public class Player{
    private int credit;
    private int level;
    private int rehearsals;
-   private String room;
+   private String currRoom;
    private String role;
 
    // player contructor
@@ -17,7 +17,7 @@ public class Player{
       credit = 0;
       level = 1;
       rehearsals = 0;
-      room = "Trailer";
+      currRoom = "Trailer";
       role = null;
    }
 
@@ -43,7 +43,7 @@ public class Player{
    public int getCredit(){
       return credit;
    }
-   
+
    public void addCredit(int amount){
       credit += amount;
    }
@@ -84,8 +84,14 @@ public class Player{
    }// end rehearse()
 
    public boolean move(String room){
-
-      return true; // place holder for compilation purposes
+     // write a method in Controller class called isAdjacent()
+/*
+     if (isAdjacent(currRoom, room){
+        currRoom = room;
+        return true;
+     }
+*/     
+      return false;
    }// end move()
 
    public boolean takeRole(String role){
