@@ -48,7 +48,7 @@ public class Controller{
       sceneCount--;
    }
 
-   public void startGame (int numPlaying) {
+   public Controller startGame (int numPlaying) {
 	playerCount = numPlaying;
    	Controller game = new Controller();
 	Board gameBoard = new Board();
