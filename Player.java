@@ -1,9 +1,10 @@
 //Player.java
 
+import java.util.ArrayList;
 public class Player{
 
+  private String name;
    private int idNumber;
-   private String name;
    private int money;
    private int credit;
    private int level;
@@ -12,9 +13,9 @@ public class Player{
    private String role;
 
    // player contructor
-   public Player(int num, String pName){
+   public Player(int num, String name){
+      this.name = name;
       idNumber = num;
-      name = pName;
       money = 0;
       credit = 0;
       level = 1;
@@ -26,6 +27,14 @@ public class Player{
 ////////////////////////////////////////////////////////////////////
 // getters & setters
 ////////////////////////////////////////////////////////////////////
+
+  public String getName(){
+    return name;
+  }
+  
+  public String getCurrRoom(){
+    return currRoom;
+  }
 
    // getter for player number
    public int getIdNum(){
@@ -73,9 +82,9 @@ public class Player{
       rehearsals = 0;
    }
 
-////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
 // Behavior methods
-////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
 
    public void act(){
 
@@ -85,15 +94,22 @@ public class Player{
 
    }// end rehearse()
 
-   public boolean move(String room){
-     // write a method in Controller class called isAdjacent()
-/*
-     if (isAdjacent(currRoom, room){
-        currRoom = room;
-        return true;
+///////////////////////////////////////////////////////////////////////
+// Function name: move()
+// Parameter: String rooms
+// Returns: boolean
+// Behavior: returns true if the the given room is adjacent to the players
+// current room. Also sets player's current room to the given room.
+///////////////////////////////////////////////////////////////////////
+   public boolean move(String room, ArrayList<String> adjRooms){
+     //ArrayList<String> adjRooms = controller.getAdjacent();
+     for (int i = 0; i < adjRooms.size(); i++){
+        if (room.equals(adjRooms.get(i))){
+           currRoom = adjRooms.get(i);
+           return true;
+        }
      }
-*/     
-      return false;
+     return false;
    }// end move()
 
    public boolean takeRole(String role){

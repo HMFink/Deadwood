@@ -11,49 +11,77 @@ public class Controller{
 
    private int day = 1;
    private int sceneCount = 0;
-   private int playerCount = 0;
+   private int playerCount;
    private static ArrayList<Card> cards;
    private static ArrayList<Scene> scenes;
+   Trailer trailer;
+   CastingOffice office;
    private static ArrayList<Player> players;
    private static int currentCard;
 
    // Controller constructor
-   private Controller(){
+   public Controller(int numPlayers){
       day = 0;
       sceneCount = 10;
+      playerCount = numPlayers;
       cards = new ArrayList<Card>();
       scenes = new ArrayList<Scene>();
+      players = new ArrayList<Player>();
       createCards();
       currentCard = 0;
       Collections.shuffle(cards);
-      createPlayers();
-      createRooms(num);
+      createPlayers(numPlayers);
+      createRooms(numPlayers);
    }
 
-   private void createPlayers(){
+///////////////////////////////////////////////////////////////////////
+// Function Name: createPlayers()
+// Behavior: Prompts users for player names and creates players. Players
+// are then stored in the players arraylist
+///////////////////////////////////////////////////////////////////////
+   private void createPlayers(int numPlayers){
       // Variables
       Scanner in = new Scanner(System.in);
       String name;
       // Get player names
-      for (int i=1; i<=playerCount; i++){
+      for (int i=1; i<=numPlayers; i++){
           System.out.print("Enter player " + i + "'s name: ");
-	  name = in.next();
-	  player.add(new Player(i, name));
-	  System.out.println();
+	        name = in.next();
+          Player temp = new Player(i, name);
+	        players.add(temp);
+	        System.out.println();
       }
-   }
+   }// end cratePlayers
 
-
+///////////////////////////////////////////////////////////////////////
+// Function name: decrementScene()
+// Behavior: decrements the number scenes currently left on the board
+///////////////////////////////////////////////////////////////////////
    public void decrementScene(){
       sceneCount--;
    }
 
-   public Controller startGame (int numPlaying) {
-	playerCount = numPlaying;
-   	Controller game = new Controller();
-	Board gameBoard = new Board();
+///////////////////////////////////////////////////////////////////////
+// Function name: getPlayer()
+// Behavior: returns the players ArrayList
+///////////////////////////////////////////////////////////////////////
+   public ArrayList<Player> getPlayers(){
+     return players;
+   }// getPlayers()
+
+///////////////////////////////////////////////////////////////////////
+// Function name: startGame()
+// Parameters: int numPlaying
+// Returns: Controller
+///////////////////////////////////////////////////////////////////////
+   public void startGame (int numPlaying) {
+	   //playerCount = numPlaying;
+   	 //Controller game = new Controller();
+	   //Board gameBoard = new Board();
+     //return game;
    }
-	
+
+
    public void startDay () {
       for (int i = 0; i < 10; i++){
         scenes.get(i).ChangeCard(cards.get(currentCard));
@@ -62,25 +90,53 @@ public class Controller{
    }
 
    public void startTurn () {
-   
+
    }
 
    public void endTurn () {
-   
+
    }
 
    public void endDay () {
-   
+
    }
 
    public void endGame () {
-   
+
    }
 
    public void calcWinner () {}
 
    public ArrayList<Card> getCards(){
       return cards;
+   }
+
+///////////////////////////////////////////////////////////////////////
+// Function name: getAdjacent()
+// Parameters: String currRoom
+// Returns ArrayList<String>
+// Behavior: returns an arraylist of all the rooms that are ajacent to
+// to the given room.
+///////////////////////////////////////////////////////////////////////
+   public ArrayList<String> getAdjacent(int currPlayer){
+
+     String currRoom = players.get(currPlayer).getCurrRoom();
+
+      if (currRoom.equals("Trailer")){
+        System.out.println("returning trailer neighbors");
+         return trailer.getNeighbors();
+      }
+      else if (currRoom.equals("Office")){
+         return office.getNeighbors();
+      }
+      else{
+         for (int i = 0; i < scenes.size(); i++){
+            if (scenes.get(i).getName().equals(currRoom)){
+               return scenes.get(i).getNeighbors();
+            }
+         }
+      }
+      return null;
    }
 
 
@@ -193,8 +249,8 @@ public class Controller{
 
    private void createRooms(int numPlayers){
 	   // create all rooms
-	   CastingOffice office = new CastingOffice(numPlayers);
-	   //Trailer start = new Trailer(numPlayers);
+	   this.office = new CastingOffice(numPlayers);
+	   this.trailer = new Trailer(numPlayers);
 	  // Board gameBoard = new Board();
 
       DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class CastingOffice extends Room {
 
 	// Fields
+	private String name;
 	private int present[];
 	final int money[] = {4, 10, 18, 28, 40};
 	final int credit[] = {5, 10, 15, 20, 25};
@@ -10,12 +11,14 @@ public class CastingOffice extends Room {
 
 	// Constructor
 	CastingOffice (int numPlayers) {
-		// add 0 for absent
+
+		name = "Office";
 		neighbors = new ArrayList<String>();
 		neighbors.add("Train Station");
 		neighbors.add("Ranch");
 		neighbors.add("Secret Hideout");
 		present = new int[numPlayers];
+			// add 0 for absent
 		for (int i=0; i<numPlayers; i++) {
 			present[i]=0;
 		}

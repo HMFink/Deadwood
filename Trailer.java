@@ -3,16 +3,19 @@ import java.util.ArrayList;
 public class Trailer extends Room {
 
 	// Fields
-	int present[];
-	int numPlay;
-	ArrayList<String> neighbors;
+	private String name;
+	private int present[];
+	private int numPlay;
+	private ArrayList<String> neighbors;
 
 	// Constructor
 	Trailer (int numPlayers) {
+
+		name = "Trailer";
 		neighbors = new ArrayList<String>();
 		neighbors.add("Main Street");
 		neighbors.add("Saloon");
-		neigbors.add("Hotel");
+		neighbors.add("Hotel");
 
 		numPlay = numPlayers;
 		present = new int[numPlayers];
@@ -22,6 +25,10 @@ public class Trailer extends Room {
 		}
 	}
 	// Methods
+
+	public ArrayList<String> getNeighbors(){
+		return neighbors;
+	}
 	public void Reset() {
 		// change all player positions to the trailer
 		for (int i=0; i<numPlay; i++) {
