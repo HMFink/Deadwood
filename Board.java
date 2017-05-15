@@ -1,14 +1,7 @@
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-
 // Board.java
 
 public class Board{
    // Fields
-   Room rooms[]; // hardcode the list of rooms?
    
    // Board constructor
    public Board(){
@@ -44,19 +37,7 @@ public class Board{
    }
    
    public void run () {
-	   // run buttons and listeners
-	   Display display = new Display ();
-	   Shell shell = new Shell (display);
-	   Combo combo = new Combo (shell, SWT.READ_ONLY);
-	   combo.setItems ("Who", "Where", "Move", "Work", "Upgrade", "Rehearse", "Act", "End");
-	   Rectangle clientArea = shell.getClientArea ();
-	   combo.setBounds (clientArea.x, clientArea.y, 200, 200);
-	   shell.pack ();
-	   shell.open ();
-	   while (!shell.isDisposed ()) {
-		   if (!display.readAndDispatch ()) display.sleep ();
-	   }
-	   display.dispose ();
+	  
    }
 }// end Board class
 
