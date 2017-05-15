@@ -31,7 +31,10 @@ public class Controller{
    }
 
    private void createPlayers(){
+      // Variables
+      Scanner in = new Scanner(System.in);
       String name;
+      // Get player names
       for (int i=0; i<playerCount; i++){
           System.out.print("Enter player " + i + "'s name: ");
 	  name = in.next();
@@ -48,22 +51,31 @@ public class Controller{
    public void startGame (int numPlaying) {
 	playerCount = numPlaying;
    	Controller game = new Controller();
+	Board gameBoard = new Board();
    }
 	
    public void startDay () {
-	    for (int i = 0; i < 10; i++){
+      for (int i = 0; i < 10; i++){
         scenes.get(i).ChangeCard(cards.get(currentCard));
         currentCard++;
       }
    }
 
-   public void startTurn () {}
+   public void startTurn () {
+   
+   }
 
-   public void endTurn () {}
+   public void endTurn () {
+   
+   }
 
-   public void endDay () {}
+   public void endDay () {
+   
+   }
 
-   public void endGame () {}
+   public void endGame () {
+   
+   }
 
    public void calcWinner () {}
 
