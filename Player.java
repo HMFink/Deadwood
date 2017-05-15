@@ -3,6 +3,7 @@
 public class Player{
 
    private int idNumber;
+   private String name;
    private int money;
    private int credit;
    private int level;
@@ -11,8 +12,9 @@ public class Player{
    private String role;
 
    // player contructor
-   public Player(int num){
+   public Player(int num, String pName){
       idNumber = num;
+      name = pName;
       money = 0;
       credit = 0;
       level = 1;
