@@ -11,6 +11,7 @@ public class Deadwood {
 		// Enter number of players
 		System.out.print("Please enter the number of players (2-8): ");
 		numPlaying = in.nextInt();
+		System.out.println();
 		// Call controller
 		startGame(numPlaying);
 	}
