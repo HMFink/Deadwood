@@ -9,7 +9,7 @@ import org.xml.sax.SAXException;
 
 public class Controller{
 
-   private int day = 0;
+   private int day = 1;
    private int sceneCount = 0;
    private int playerCount = 0;
    private static ArrayList<Card> cards;
