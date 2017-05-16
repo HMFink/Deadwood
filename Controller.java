@@ -173,6 +173,36 @@ public class Controller{
       }
       return null;
    }
+	
+///////////////////////////////////////////////////////////////////////
+// Function name: inScene()
+// Behavior: returns true if the given role is in the same scene as the
+// given player
+///////////////////////////////////////////////////////////////////////
+   public boolean inScene(String role, int player){
+      String sceneName = players.get(player).getCurrRoom();
+      System.out.println("current scene = " + sceneName);
+      for (int i = 0; i < scenes.size(); i++){
+        if (sceneName.equals(scenes.get(i).getName())){
+           int len = scenes.get(i).getOffCardRoles().size();
+           for (int j = 0; j < len; j++){
+             if (role.equalsIgnoreCase(scenes.get(i).getOffCardRoles().get(j).getName())){
+               //System.out.println("role is on scene!");
+               return true;
+             }
+           }
+           for (int k = 0; k < scenes.get(i).getCard().getRoles().size(); k++){
+              //System.out.println("on card role = " + scenes.get(i).getCard().getRoles().get(k).getName());
+              if (role.equalsIgnoreCase(scenes.get(i).getCard().getRoles().get(k).getName())){
+                 //System.out.println("role is on scene!");
+                 return true;
+              }
+           }
+        }
+      }
+      //System.out.println("not found in scene");
+      return false;
+   }	
 
 
    public static void createCards(){
