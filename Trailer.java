@@ -25,15 +25,7 @@ public class Trailer extends Room {
 		}
 	}
 	// Methods
-
 	public ArrayList<String> getNeighbors(){
 		return neighbors;
-	}
-
-	public void Reset() {
-		// change all player positions to the trailer
-		for (int i=0; i<numPlay; i++) {
-			present[i]=1;
-		}
 	}
 }

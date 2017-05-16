@@ -87,9 +87,8 @@ public class Deadwood{
 								String room = in.next();
 								// check if given room is valid
            			if (control.getPlayers().get(currentPlayer-1).move(room, adjRooms)) {
-             				System.out.println("You have moved to " + room);
+             				System.out.println("You have moved to " + control.getPlayers().get(currentPlayer-1).getCurrRoom());
 										validRoom = true;
-										currentPlayer++;
           			}
 								else {
 										System.out.println("Invalid room! Please enter one of the rooms listed above");
@@ -98,32 +97,52 @@ public class Deadwood{
 							adjRooms.clear();
 
       			}
-
 						else if (command.equals("work")){
 							System.out.print("Enter the role you would like to take: ");
 							String role = in.next();
-         				if (control.getPlayers().get(currentPlayer-1).takeRole(role)){
-           					System.out.println("Role taken!");
-        				}
-								else {
-									System.out.println("Invalid role!");
-								}
+							if (in.hasNext()) {
+								role += in.nextLine();
+							}
+         			if (control.getPlayers().get(currentPlayer-1).takeRole(role)){
+           				System.out.println("Role taken!");
+        			}
+							else {
+								System.out.println("Invalid role!");
+							}
       			} else if (command.equals("act")){
-        				System.out.println("Acted!");
+        				if (control.getPlayers().get(currentPlayer-1).act()) {
+									System.out.println("Acted!");
+								} else {
+									System.out.println("Fail!");
+								}
       			} else if (command.equals("rehearse")){
-        				System.out.println("");
+								if (control.getPlayers().get(currentPlayer-1).rehearse()) {
+									System.out.println("Rehearsed!");
+								} else {
+									System.out.println("Fail!");
+								}
       			} else if (command.equals("upgrade")){
-        				System.out.println("Leveled up!");
+								if (control.getPlayers().get(currentPlayer-1).upgrade()) {
+									System.out.println("Leveled up!");
+								} else {
+									System.out.println("Fail!");
+								}
       			} else if (command.equals("who")){
-        				System.out.println("");
+        				System.out.println("Player " + currentPlayer + ": " + control.getPlayers().get(currentPlayer-1).getName());
+								System.out.println("Current Money: " + control.getPlayers().get(currentPlayer-1).getMoney());
+								System.out.println("Current Credits: " + control.getPlayers().get(currentPlayer-1).getCredit());
+								System.out.println("Current Level: " + control.getPlayers().get(currentPlayer-1).getLevel());
+								System.out.println("Current Room: " + control.getPlayers().get(currentPlayer-1).getCurrRoom());
+								System.out.println("Current Role: " + control.getPlayers().get(currentPlayer-1).getRole());
       			} else if (command.equals("where")){
-        				System.out.println("");
+        				System.out.println("Current Room: " + control.getPlayers().get(currentPlayer-1).getCurrRoom());
+								String sceneName = control.getPlayers().get(currentPlayer-1).getCurrRoom();
+								System.out.println("Shooting: " + control.getCard(sceneName));
       			} else if (command.equals("end")){
         				System.out.println("Turn ended");
 								valid = true;
-      			} else {
-        				System.out.println("Invalid command! please enter one of the options listed above.");
-        			}
+								currentPlayer++;
+      			}
     		}
   		}
 	}

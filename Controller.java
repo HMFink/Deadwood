@@ -85,29 +85,50 @@ public class Controller{
 
 
    public void startDay () {
+      for (int i=0; i<playerCount; i++) {
+        players.get(i).setCurrRoom("trailer");
+      }
       for (int i = 0; i < 10; i++){
         scenes.get(i).ChangeCard(cards.get(currentCard));
         currentCard++;
       }
    }
 
-   public void startTurn () {
-
-   }
-
-   public void endTurn () {
-
-   }
-
    public void endDay () {
-
+     day++;
+     if (day==3) {
+       calcWinner();
+     } else {
+       startDay();
+     }
    }
 
-   public void endGame () {
-
+   private void calcWinner () {
+     int sumValue = 0;
+     int maxSum = 0;
+     int winner = -1;
+     for (int i=0; i<=playerCount; i++) {
+       sumValue = players.get(i).getMoney();
+       sumValue += players.get(i).getCredit();
+       sumValue += 5*(players.get(i).getLevel());
+       if (sumValue > maxSum) {
+         maxSum = sumValue;
+         winner = i;
+       }
+     }
+     System.out.println("The winner is " + players.get(winner).getName());
    }
 
-   public void calcWinner () {}
+   public String getCard(String scene) {
+     for (int i = 0; i < scenes.size(); i++){
+       String sceneName = scenes.get(i).getName();
+      // System.out.println("sceneName = " + sceneName);
+        if (sceneName.equals(scene)){
+          return scenes.get(i).getCard().getName();
+        }
+     }
+     return null;
+   }
 
    public ArrayList<Card> getCards(){
       return cards;

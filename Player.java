@@ -32,8 +32,16 @@ public class Player{
     return name;
   }
 
+  public String getRole() {
+    return role;
+  }
+
   public String getCurrRoom(){
     return currRoom;
+  }
+
+  public void setCurrRoom(String newCurr){
+    currRoom = newCurr;
   }
 
    // getter for player number
@@ -86,13 +94,17 @@ public class Player{
 // Behavior methods
 ///////////////////////////////////////////////////////////////////////
 
-   public void act(){
-
+   public boolean act(){
+     return true;
    }// end act()
 
-   public void rehearse(){
-
+   public boolean rehearse(){
+     return true;
    }// end rehearse()
+
+   public boolean upgrade(){
+     return true;
+   }// end upgrade
 
 ///////////////////////////////////////////////////////////////////////
 // Function name: move()
@@ -104,7 +116,7 @@ public class Player{
    public boolean move(String room, ArrayList<String> adjRooms){
      //ArrayList<String> adjRooms = controller.getAdjacent();
      for (int i = 0; i < adjRooms.size(); i++){
-        if (room.equals(adjRooms.get(i))){
+        if (adjRooms.get(i).contains(room)){
            currRoom = adjRooms.get(i);
            return true;
         }
@@ -113,8 +125,7 @@ public class Player{
    }// end move()
 
    public boolean takeRole(String role){
-
-      return true; // place holder for compilation purposes
+      return true;
    }// end takeRole()
 
 }// end Player class
