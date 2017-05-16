@@ -26,6 +26,10 @@ public class Role {
 	public boolean MainOrExtra () {
 		return mainOrExtra;
 	}
+	
+	public int getLevel () {
+		return roleLevel;
+	}
 
 	public String getName () {
 		return roleName;
