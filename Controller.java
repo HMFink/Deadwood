@@ -23,7 +23,7 @@ public class Controller{
    // Controller constructor
    private Controller () {}
 	
-   public getController (int numPlayers) {
+   public static getController (int numPlayers) {
 	day = 0;
       	sceneCount = 10;
       	playerCount = numPlayers;
