@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 
 public class Scene {
 	// Fields
@@ -8,6 +10,7 @@ public class Scene {
 	int budget;
 	ArrayList<String> neighbors;
 	Card card;
+	Random rand = new Random();
 
 	// Constructor
 	Scene (String name, int shots, int numPlayers, ArrayList<String> neighList, ArrayList<Role> offCardRoles){
@@ -57,24 +60,57 @@ public class Scene {
 	}
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
-
-/*
 		// Methods
-	boolean ActRoll (int playerNum, int rehearseCount) {
+	public boolean ActRoll (int playerNum, int rehearseCount) {
+		int roll = rand.nextInt(6)+1; //returns 0-5 plus 1 for 1-6
+		roll += rehearseCount; //to account for rehearsing bonus
+		if (roll >= budget) {
+			shotCount--;
+			if (shotCount) {
+				EndRoll();
+			}
+			return true;
+		}
 		return false;
 	}
 
-	void EndRoll () {
+	private void EndRoll () {
 		// variables
 		ArrayList<Integer> rolls = new ArrayList<Integer>();
-		// roll and organize from highest to lowest
-		// handles assigning of rewards
-		AssignReward(rolls);
+		// check if someone is working an on-card role
+		ArrayList<Roles> playerList = card.getRoles();
+		for (int j=0; j<playerList.size(); j++) {
+			if (playerList.get(j).getNum()!=-1) {
+				// roll and organize from highest to lowest
+				for (int i=0; i<budget; i++) {
+					rolls.add(rand.nextInt(6)+1);
+				}
+				Collections.sort(rolls);
+				Collections.reverse(rolls);
+				// handles assigning of rewards
+				AssignReward(rolls, playerList.size());
+				break;
+			}
+		}
 	}
 
-	void AssignReward (ArrayList<Integer> diceRolls) {
-		// increments each players money
+	private void AssignReward (ArrayList<Integer> diceRolls, ArrayList<Roles> roles) {
+		Controller control = getController();
+		ArrayList<Player> players = control.getPlayers();
+		int numRoles = roles.size();
+		// increments each players money on the card
+		for (int i=0; i<numRoles; i++) {
+			if (roles.get(i)!=-1) { // player is on this role
+				players.get(roles.get(i)).changeMoney(diceRolls.get(i));
+			}
+		}
+		// increments each players money off the card
+		numRoles = offCardRoles.size();
+		for (int i=0; i<numRoles; i++) {
+			if (offCardRoles.get(i)!=-1) { // player is on this role
+				players.get(offCardRoles.get(i)).changeMoney(offCardRoles.get(i).getLevel());
+			}
+		}
 	}
-*/
 
 }
