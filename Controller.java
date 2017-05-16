@@ -9,7 +9,6 @@ import org.xml.sax.SAXException;
 
 public class Controller{
 
-   private Controller controller = new Controller();
    private int day = 1;
    private int sceneCount = 0;
    private int playerCount;
@@ -21,21 +20,18 @@ public class Controller{
    private static int currentCard;
 
    // Controller constructor
-   private Controller () {}
-	
-   public static Controller getController (int numPlayers) {
-	day = 0;
-      	sceneCount = 10;
-      	playerCount = numPlayers;
-      	cards = new ArrayList<Card>();
-      	scenes = new ArrayList<Scene>();
-      	players = new ArrayList<Player>();
-      	createCards();
-      	currentCard = 0;
-      	Collections.shuffle(cards);
-      	createPlayers(numPlayers);
-      	createRooms(numPlayers);
-   	return controller;
+   public Controller(int numPlayers){
+      day = 0;
+      sceneCount = 10;
+      playerCount = numPlayers;
+      cards = new ArrayList<Card>();
+      scenes = new ArrayList<Scene>();
+      players = new ArrayList<Player>();
+      createCards();
+      currentCard = 0;
+      Collections.shuffle(cards);
+      createPlayers(numPlayers);
+      createRooms(numPlayers);
    }
 
 
@@ -73,19 +69,8 @@ public class Controller{
 ///////////////////////////////////////////////////////////////////////
    public ArrayList<Player> getPlayers(){
      return players;
-   }// getPlayers()
+   }// end getPlayers()
 
-///////////////////////////////////////////////////////////////////////
-// Function name: startGame()
-// Parameters: int numPlaying
-// Returns: Controller
-///////////////////////////////////////////////////////////////////////
-   public void startGame (int numPlaying) {
-	   //playerCount = numPlaying;
-   	 //Controller game = new Controller();
-	   //Board gameBoard = new Board();
-     //return game;
-   }
 
 
    public void startDay () {
@@ -173,13 +158,15 @@ public class Controller{
       }
       return null;
    }
-	
+
 ///////////////////////////////////////////////////////////////////////
-// Function name: inScene()
+// Function name: canWork()
 // Behavior: returns true if the given role is in the same scene as the
 // given player
 ///////////////////////////////////////////////////////////////////////
-   public boolean inScene(String role, int player){
+   public boolean canWork(String role, int player){
+     boolean in = false;
+     boolean level = false;
       String sceneName = players.get(player).getCurrRoom();
       System.out.println("current scene = " + sceneName);
       for (int i = 0; i < scenes.size(); i++){
@@ -188,21 +175,44 @@ public class Controller{
            for (int j = 0; j < len; j++){
              if (role.equalsIgnoreCase(scenes.get(i).getOffCardRoles().get(j).getName())){
                //System.out.println("role is on scene!");
-               return true;
+               in = true;
+               if (players.get(player).getLevel() >= scenes.get(i).getOffCardRoles().get(j).getLevel()){
+                 level = true;
+               }
              }
            }
            for (int k = 0; k < scenes.get(i).getCard().getRoles().size(); k++){
               //System.out.println("on card role = " + scenes.get(i).getCard().getRoles().get(k).getName());
               if (role.equalsIgnoreCase(scenes.get(i).getCard().getRoles().get(k).getName())){
                  //System.out.println("role is on scene!");
-                 return true;
+                 in = true;
+                 if (players.get(player).getLevel() >= scenes.get(i).getCard().getRoles().get(k).getLevel()){
+                   level = true;
+                 }
               }
            }
         }
       }
-      //System.out.println("not found in scene");
-      return false;
-   }	
+
+      if (in && level){
+        //System.out.println("You are now working this role.");
+        players.get(player).changeRole(role);
+
+        return true;
+      }
+      else if (!in){
+        System.out.println("That role is not in this scene.");
+        return false;
+      }
+      else if (!level){
+        System.out.println("Your current level is not high enough for this role.");
+        return false;
+      }
+      else{
+        System.out.println("You cannot take this role");
+        return false;
+      }
+  }
 
 
    public static void createCards(){
@@ -252,12 +262,6 @@ public class Controller{
                budget = card.getAttribute("budget");
                create = true;
 
-/*
-               System.out.println("------------------------------------------");
-               System.out.println("Name of card: " + name);
-               System.out.println("Budget of card: " + budget);
-               cardCount++;
-*/
             }
 
             //scene section
@@ -266,10 +270,6 @@ public class Controller{
                card = (Element) cardNode;
                sceneNum = card.getAttribute("number");
                sceneLine = card.getTextContent();
-/*
-               System.out.println("scene number: " + sceneNum);
-               System.out.println("scene description: " + sceneLine);
-*/
             }
 
             // parts sections
@@ -283,11 +283,7 @@ public class Controller{
                // build a Role ArrayList to pass to the card
                Role temp = new Role(level, true, roleName, roleLine);
                roles.add(temp);
-/*
-               System.out.println("role name: " + roleName);
-               System.out.println("role level: " + roleLevel);
-               System.out.println("role line: " + roleLine);
-*/
+
             }
          }
 
@@ -298,7 +294,7 @@ public class Controller{
          roles.clear();
          createCount++;
 
-         //System.out.println("total cards created = " + createCount);
+
       }
       catch(ParserConfigurationException ex){
          ex.printStackTrace();
@@ -318,7 +314,6 @@ public class Controller{
      this.office = new CastingOffice(numPlayers);
      this.trailer = new Trailer(numPlayers);
 
-	  // Board gameBoard = new Board();
 
       DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
       try{
@@ -341,12 +336,6 @@ public class Controller{
          int createCount = 0;
 
 
-/*
-               System.out.println("------------------------------------------");
-               System.out.println("Name of card: " + name);
-               System.out.println("Budget of card: " + budget);
-               cardCount++;
-*/
          for (int i = 0; i < roomList.getLength(); i++){
 
             Node roomNode = roomList.item(i);
@@ -399,15 +388,7 @@ public class Controller{
          offCardRoles.clear();
          neighbors.clear();
          createCount++;
-         //System.out.println("number of scenes created: " + createCount);
-/*
-         for (int i = 0; i < scenes.size(); i++){
-           System.out.println("scene name = " + scenes.get(i).getName());
-           for (int j = 0; j < scenes.get(i).getNeighbors().size(); j++){
-             System.out.println("neighbor: " + scenes.get(i).getNeighbors().get(j));
-           }
-         }
-*/
+
       }
       catch(ParserConfigurationException ex){
          ex.printStackTrace();

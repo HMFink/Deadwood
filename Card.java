@@ -12,13 +12,13 @@ public class Card{
    private boolean flipped;
 
    // constructor
-   public Card(String name, int budget, int sceneNum, String description, ArrayList<Role> roles){
+   public Card(String name, int budget, int sceneNum, String description, ArrayList<Role> cardRoles){
       this.name = name;
       this.budget = budget;
       this.sceneNum = sceneNum;
       this.description = description;
       flipped = false;
-      this.roles = roles;
+      roles = new ArrayList<Role>(cardRoles);
    }
 
 ////////////////////////////////////////////////////////////////////

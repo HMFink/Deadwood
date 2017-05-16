@@ -97,24 +97,29 @@ public class Deadwood{
 							adjRooms.clear();
 
       			}
+
+						// player chooses to take a role
 						else if (command.equals("work")){
 							System.out.print("Enter the role you would like to take: ");
 							String role = in.next();
 							if (in.hasNext()) {
 								role += in.nextLine();
 							}
-         			if (control.getPlayers().get(currentPlayer-1).takeRole(role)){
-           				System.out.println("Role taken!");
+         			if (control.canWork(role, currentPlayer-1)){
+           				System.out.println("You are now working this role!");
         			}
 							else {
 								System.out.println("Invalid role!");
 							}
+
+							// player chooses to act
       			} else if (command.equals("act")){
         				if (control.getPlayers().get(currentPlayer-1).act()) {
 									System.out.println("Acted!");
 								} else {
 									System.out.println("Fail!");
 								}
+								// player chooses to rehearse
       			} else if (command.equals("rehearse")){
 								if (control.getPlayers().get(currentPlayer-1).rehearse()) {
 									System.out.println("Rehearsed!");

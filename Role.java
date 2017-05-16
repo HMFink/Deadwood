@@ -12,6 +12,7 @@ public class Role {
 		mainOrExtra = onCard;
 		roleName = name;
 		this.line = line;
+		playerNum = -1;
 	}
 
 	// Methods
@@ -23,19 +24,16 @@ public class Role {
 		}
 	}
 
-	public boolean MainOrExtra () {
-		return mainOrExtra;
+	public String getName(){
+		return roleName;
 	}
-	
-	public int getLevel () {
+
+	public int getLevel(){
 		return roleLevel;
 	}
 
-	public String getName () {
-		return roleName;
+	public boolean MainOrExtra () {
+		return mainOrExtra;
 	}
-	
-	public int getNum () {
-		return playerNum;
-	}
+
 }

@@ -36,6 +36,10 @@ public class Player{
     return role;
   }
 
+  public void changeRole(String role){
+    this.role = role;
+  }
+
   public String getCurrRoom(){
     return currRoom;
   }
@@ -125,7 +129,9 @@ public class Player{
    }// end move()
 
    public boolean takeRole(String role){
-      return true;
+
+
+     return true;
    }// end takeRole()
 
 }// end Player class
