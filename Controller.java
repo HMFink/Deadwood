@@ -9,6 +9,7 @@ import org.xml.sax.SAXException;
 
 public class Controller{
 
+   private Controller controller = new Controller();
    private int day = 1;
    private int sceneCount = 0;
    private int playerCount;
@@ -20,18 +21,21 @@ public class Controller{
    private static int currentCard;
 
    // Controller constructor
-   public Controller(int numPlayers){
-      day = 0;
-      sceneCount = 10;
-      playerCount = numPlayers;
-      cards = new ArrayList<Card>();
-      scenes = new ArrayList<Scene>();
-      players = new ArrayList<Player>();
-      createCards();
-      currentCard = 0;
-      Collections.shuffle(cards);
-      createPlayers(numPlayers);
-      createRooms(numPlayers);
+   private Controller () {}
+	
+   public getController (int numPlayers) {
+	day = 0;
+      	sceneCount = 10;
+      	playerCount = numPlayers;
+      	cards = new ArrayList<Card>();
+      	scenes = new ArrayList<Scene>();
+      	players = new ArrayList<Player>();
+      	createCards();
+      	currentCard = 0;
+      	Collections.shuffle(cards);
+      	createPlayers(numPlayers);
+      	createRooms(numPlayers);
+   	return 
    }
 
 
