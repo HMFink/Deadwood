@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Trailer extends Room {
+public class Trailer {
 
 	// Fields
 	private String name;
