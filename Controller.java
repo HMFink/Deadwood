@@ -23,7 +23,7 @@ public class Controller{
    // Controller constructor
    private Controller () {}
 	
-   public static getController (int numPlayers) {
+   public static Controller getController (int numPlayers) {
 	day = 0;
       	sceneCount = 10;
       	playerCount = numPlayers;
@@ -35,7 +35,7 @@ public class Controller{
       	Collections.shuffle(cards);
       	createPlayers(numPlayers);
       	createRooms(numPlayers);
-   	return 
+   	return controller;
    }
 
 
