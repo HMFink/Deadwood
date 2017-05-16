@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class CastingOffice extends Room {
+public class CastingOffice {
 
 	// Fields
 	private String name;
