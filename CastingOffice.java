@@ -12,7 +12,7 @@ public class CastingOffice extends Room {
 	// Constructor
 	CastingOffice (int numPlayers) {
 
-		name = "Office";
+		name = "office";
 		neighbors = new ArrayList<String>();
 		neighbors.add("Train Station");
 		neighbors.add("Ranch");
@@ -50,11 +50,11 @@ public class CastingOffice extends Room {
 				p.setLevel(level);
 			} else {
 				// display error message and continue
-				System.out.println("Not enough credits/money. Try again with other type.");
+				//dispMessage("Not enough credits/money. Try again with other type.");
 			}
 		} else {
 			// display error message and continue
-			System.out.println("Not in the casting office!");
+			//dispMessage("Not in the casting office!");
 		}
 	}
 	boolean CheckMoneyCredit (int amount, int level, int type) {

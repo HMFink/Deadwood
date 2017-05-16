@@ -1,11 +1,18 @@
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+
 // Board.java
 
 public class Board{
    // Fields
+   Room rooms[]; // hardcode the list of rooms?
    
    // Board constructor
    public Board(){
-      // board created
+	   run();
    }
 
    // update the Board display
@@ -35,4 +42,36 @@ public class Board{
       // print message
       System.out.println(message);
    }
+   
+   public void run () {
+	   // run buttons and listeners
+	   Display display = new Display ();
+	   Shell shell = new Shell (display);
+	   Combo combo = new Combo (shell, SWT.READ_ONLY);
+	   combo.setItems ("Who", "Where", "Move", "Work", "Upgrade", "Rehearse", "Act", "End");
+	   Rectangle clientArea = shell.getClientArea ();
+	   combo.setBounds (clientArea.x, clientArea.y, 200, 200);
+	   shell.pack ();
+	   shell.open ();
+	   while (!shell.isDisposed ()) {
+		   if (!display.readAndDispatch ()) display.sleep ();
+	   }
+	   display.dispose ();
+   }
 }// end Board class
+
+/* NOTES *****************************************************************************************************
+ * Command				Action
+ * ***********************************************************************************************************
+ * who					The software identifies the current player and any parts that the player is working.
+ * Where				The software describes the current player’s room and any active scenes.
+ * move (room)			The current player moves to the indicated room.
+ * work (part)			The current player takes the indicated role.
+ * upgrade ($ level) 	Upgrade the current player to the indicated level
+ * upgrade (cr level)	Upgrade the current player to the indicated level.
+ * Rehearse 			The current player rehearses
+ * act 					The current player performs in its current role.
+ * end					End the current player’s turn 
+ * 
+ * HELP: http://www.vogella.com/tutorials/SWT/article.html
+ *************************************************************************************************************/

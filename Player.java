@@ -20,7 +20,7 @@ public class Player{
       credit = 0;
       level = 1;
       rehearsals = 0;
-      currRoom = "Trailer";
+      currRoom = "trailer";
       role = null;
    }
 
@@ -31,7 +31,7 @@ public class Player{
   public String getName(){
     return name;
   }
-  
+
   public String getCurrRoom(){
     return currRoom;
   }

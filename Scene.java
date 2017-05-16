@@ -10,9 +10,11 @@ public class Scene extends Room {
 	Card card;
 
 	// Constructor
-	Scene (String name, int shots, int numPlayers, ArrayList<String> neighbors, ArrayList<Role> offCardRoles){
+	Scene (String name, int shots, int numPlayers, ArrayList<String> neighList, ArrayList<Role> offCardRoles){
 		this.name = name;
 		shotCount = shots;
+		this.neighbors = new ArrayList<String>(neighList);
+		//this.neighbors.addAll(neighList);
 		this.offCardRoles = offCardRoles;
 		int present[] = new int[numPlayers];
 		// add 0 for absent

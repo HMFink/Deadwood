@@ -11,7 +11,7 @@ public class Trailer extends Room {
 	// Constructor
 	Trailer (int numPlayers) {
 
-		name = "Trailer";
+		name = "trailer";
 		neighbors = new ArrayList<String>();
 		neighbors.add("Main Street");
 		neighbors.add("Saloon");
@@ -29,6 +29,7 @@ public class Trailer extends Room {
 	public ArrayList<String> getNeighbors(){
 		return neighbors;
 	}
+
 	public void Reset() {
 		// change all player positions to the trailer
 		for (int i=0; i<numPlay; i++) {

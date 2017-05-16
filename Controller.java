@@ -34,6 +34,7 @@ public class Controller{
       createRooms(numPlayers);
    }
 
+
 ///////////////////////////////////////////////////////////////////////
 // Function Name: createPlayers()
 // Behavior: Prompts users for player names and creates players. Players
@@ -52,6 +53,7 @@ public class Controller{
 	        System.out.println();
       }
    }// end cratePlayers
+
 
 ///////////////////////////////////////////////////////////////////////
 // Function name: decrementScene()
@@ -111,6 +113,10 @@ public class Controller{
       return cards;
    }
 
+   public ArrayList<Scene> getScenes(){
+     return scenes;
+   }
+
 ///////////////////////////////////////////////////////////////////////
 // Function name: getAdjacent()
 // Parameters: String currRoom
@@ -121,18 +127,22 @@ public class Controller{
    public ArrayList<String> getAdjacent(int currPlayer){
 
      String currRoom = players.get(currPlayer).getCurrRoom();
+     System.out.println("current room = " + currRoom);
 
-      if (currRoom.equals("Trailer")){
-        System.out.println("returning trailer neighbors");
+      if (currRoom.equals("trailer")){
+         //System.out.println("returning trailer neighbors");
          return trailer.getNeighbors();
       }
-      else if (currRoom.equals("Office")){
+      else if (currRoom.equals("office")){
          return office.getNeighbors();
       }
       else{
          for (int i = 0; i < scenes.size(); i++){
-            if (scenes.get(i).getName().equals(currRoom)){
-               return scenes.get(i).getNeighbors();
+           String sceneName = scenes.get(i).getName();
+          // System.out.println("sceneName = " + sceneName);
+            if (sceneName.equals(currRoom)){
+              //System.out.println("size of neighbors list = " + scenes.get(i).getNeighbors().size());
+              return scenes.get(i).getNeighbors();
             }
          }
       }
@@ -247,10 +257,12 @@ public class Controller{
 
    }
 
+
    private void createRooms(int numPlayers){
 	   // create all rooms
-	   this.office = new CastingOffice(numPlayers);
-	   this.trailer = new Trailer(numPlayers);
+     this.office = new CastingOffice(numPlayers);
+     this.trailer = new Trailer(numPlayers);
+
 	  // Board gameBoard = new Board();
 
       DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -288,11 +300,13 @@ public class Controller{
             // name of scene
             if (room.getTagName().equals("set")){
                if (create == true){
+                 System.out.println("size of neighbors list before = " + neighbors.size());
                   Scene current = new Scene(sceneName, shotCount, numPlayers, neighbors, offCardRoles);
                   scenes.add(current);
                   offCardRoles.clear();
                   neighbors.clear();
                   createCount++;
+                  System.out.println("size of neighbors list after = " + neighbors.size());
                }
                sceneName = room.getAttribute("name");
                create = true;
@@ -319,13 +333,26 @@ public class Controller{
 
          }
 
+         neighbors.clear();
+         neighbors.add("Main Street");
+         neighbors.add("General Store");
+         neighbors.add("Bank");
+         neighbors.add("trailer");
+         System.out.println("size of neighbors = " + neighbors.size());
          Scene current = new Scene(sceneName, shotCount, numPlayers, neighbors, offCardRoles);
          scenes.add(current);
          offCardRoles.clear();
          neighbors.clear();
          createCount++;
          //System.out.println("number of scenes created: " + createCount);
-
+/*
+         for (int i = 0; i < scenes.size(); i++){
+           System.out.println("scene name = " + scenes.get(i).getName());
+           for (int j = 0; j < scenes.get(i).getNeighbors().size(); j++){
+             System.out.println("neighbor: " + scenes.get(i).getNeighbors().get(j));
+           }
+         }
+*/
       }
       catch(ParserConfigurationException ex){
          ex.printStackTrace();
