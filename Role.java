@@ -30,4 +30,8 @@ public class Role {
 	public String getName () {
 		return roleName;
 	}
+	
+	public int getNum () {
+		return playerNum;
+	}
 }
