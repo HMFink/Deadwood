@@ -4,8 +4,8 @@ The Deadwood.java will contain the startup code for the entire program calling t
 
 Class Work Breakdown:
 
-DONE - Room, Role, Card, Trailer, Casting Office, Board (not used in text-based version)
+DONE(minor edits only) - Room, Role, Card, Trailer, Casting Office, Deadwood, Board (not used in text-based version)
 
-Hannah - Controller (startgame?, starttrun, endturn, endday, endgame, calcwinner), Deadwood (act, rehearse, upgrade)
+Hannah - 
 
-Trevor - Player (act, rehearse, take role, upgrade?), Scene ()
+Trevor - Player (act, rehearse, take role, upgrade), Scene (roll stuff)
