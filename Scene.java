@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Scene extends Room {
+public class Scene {
 	// Fields
 	String name;
 	ArrayList<Role> offCardRoles;
