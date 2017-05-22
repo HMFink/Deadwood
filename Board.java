@@ -1,77 +1,19 @@
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
+import javax.swing.JLayeredPane;
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import javax.imageio.ImageIO;
 
-// Board.java
+public class Board extends JLayeredPane {
+  private JLabel boardLabel;
 
-public class Board{
-   // Fields
-   Room rooms[]; // hardcode the list of rooms?
-   
-   // Board constructor
-   public Board(){
-	   run();
-   }
+  public Board() {
+    boardLabel = new JLabel();
 
-   // update the Board display
-   public void update(String keyword, int x, int y){
-      if (keyword.equalsIgnoreCase("position")) {
-         // when a players position needs to be updated
-         System.out.println("Players new position is, (" + x + ", " + y + ")");
-      } else if (keyword.equalsIgnoreCase("level")) {
-         // when a players level is upgraded
-         System.out.println("Players old level was " + x + " and new level is " + y + ")");
-      } else if (keyword.equalsIgnoreCase("takeRole")) {
-         // when a player takes a role
-         // get role name
-         String name = "Hannah";//getName();
-         System.out.println("Players new role is, " + name);
-      } else if (keyword.equalsIgnoreCase("endScene")) {
-         // when a scene ends and all players are moved off of the roles
-         System.out.println("All players in ended scene have moved to, (" + x + ", " + y + ")");
-      } else {
-         // keyword not recognized display error and try again
-         System.out.println("System error: Keyword not recognized. Please try again.");
-      }
-   }
+    Class cls = getClass();
+    ImageIcon icon = new ImageIcon(ImageIO.read(cls.getResourceAsStream("board.jpg")));
 
-   // display a message to the user(s) on the Board
-   public void dispMessage(String message){
-      // print message
-      System.out.println(message);
-   }
-   
-   public void run () {
-	   // run buttons and listeners
-	   Display display = new Display ();
-	   Shell shell = new Shell (display);
-	   Combo combo = new Combo (shell, SWT.READ_ONLY);
-	   combo.setItems ("Who", "Where", "Move", "Work", "Upgrade", "Rehearse", "Act", "End");
-	   Rectangle clientArea = shell.getClientArea ();
-	   combo.setBounds (clientArea.x, clientArea.y, 200, 200);
-	   shell.pack ();
-	   shell.open ();
-	   while (!shell.isDisposed ()) {
-		   if (!display.readAndDispatch ()) display.sleep ();
-	   }
-	   display.dispose ();
-   }
+    boardLabel.setIcon(icon);
+    add(boardLabel, new Integer(0));
+    boardLabel.setBound(0, 0, icon.getIconWidth(), icon.getIconHeight());
+  }
 }// end Board class
-
-/* NOTES *****************************************************************************************************
- * Command				Action
- * ***********************************************************************************************************
- * who					The software identifies the current player and any parts that the player is working.
- * Where				The software describes the current player’s room and any active scenes.
- * move (room)			The current player moves to the indicated room.
- * work (part)			The current player takes the indicated role.
- * upgrade ($ level) 	Upgrade the current player to the indicated level
- * upgrade (cr level)	Upgrade the current player to the indicated level.
- * Rehearse 			The current player rehearses
- * act 					The current player performs in its current role.
- * end					End the current player’s turn 
- * 
- * HELP: http://www.vogella.com/tutorials/SWT/article.html
- *************************************************************************************************************/
