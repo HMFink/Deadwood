@@ -16,12 +16,12 @@ public class Role {
 	}
 
 	// Methods
-	public void AddPlayer (int num, int level) {
-		if (level >= roleLevel) {
-			playerNum = num;
-		} else {
-			// display error message and continue
-		}
+	public void addPlayer (int num){
+		this.playerNum = num;
+	}
+
+	public int getPlayerNum(){
+		return playerNum;
 	}
 
 	public String getName(){
@@ -32,7 +32,7 @@ public class Role {
 		return roleLevel;
 	}
 
-	public boolean MainOrExtra () {
+	public boolean mainOrExtra () {
 		return mainOrExtra;
 	}
 

@@ -10,7 +10,8 @@ public class Player{
    private int level;
    private int rehearsals;
    private String currRoom;
-   private String role;
+   private Role role;
+   private Scene scene;
 
    // player contructor
    public Player(int num, String name){
@@ -32,11 +33,11 @@ public class Player{
     return name;
   }
 
-  public String getRole() {
+  public Role getRole() {
     return role;
   }
 
-  public void changeRole(String role){
+  public void changeRole(Role role){
     this.role = role;
   }
 

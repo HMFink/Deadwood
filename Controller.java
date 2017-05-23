@@ -167,8 +167,8 @@ public class Controller{
    public boolean canWork(String role, int player){
      boolean in = false;
      boolean level = false;
+     Role newRole = null;
       String sceneName = players.get(player).getCurrRoom();
-      System.out.println("current scene = " + sceneName);
       for (int i = 0; i < scenes.size(); i++){
         if (sceneName.equals(scenes.get(i).getName())){
            int len = scenes.get(i).getOffCardRoles().size();
@@ -176,6 +176,7 @@ public class Controller{
              if (role.equalsIgnoreCase(scenes.get(i).getOffCardRoles().get(j).getName())){
                //System.out.println("role is on scene!");
                in = true;
+               newRole = scenes.get(i).getOffCardRoles().get(j);
                if (players.get(player).getLevel() >= scenes.get(i).getOffCardRoles().get(j).getLevel()){
                  level = true;
                }
@@ -186,6 +187,7 @@ public class Controller{
               if (role.equalsIgnoreCase(scenes.get(i).getCard().getRoles().get(k).getName())){
                  //System.out.println("role is on scene!");
                  in = true;
+                 newRole = scenes.get(i).getCard().getRoles().get(k);
                  if (players.get(player).getLevel() >= scenes.get(i).getCard().getRoles().get(k).getLevel()){
                    level = true;
                  }
@@ -194,27 +196,26 @@ public class Controller{
         }
       }
 
-      if (in && level){
+      if (newRole.getPlayerNum() != -1){
+        System.out.println("Another player is currently working this role.");
+        return false;
+      }
+
+      else if (in && level){
         //System.out.println("You are now working this role.");
-        players.get(player).changeRole(role);
+        players.get(player).changeRole(newRole);
+        newRole.addPlayer(players.get(player).getIdNum());
 
         return true;
       }
-      else if (!in){
-        System.out.println("That role is not in this scene.");
-        return false;
-      }
-      else if (!level){
-        System.out.println("Your current level is not high enough for this role.");
-        return false;
-      }
       else{
-        System.out.println("You cannot take this role");
         return false;
       }
-  }
+  }// end canWork()
 
-
+///////////////////////////////////////////////////////////////////////
+//
+///////////////////////////////////////////////////////////////////////
    public static void createCards(){
 
       DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -308,7 +309,9 @@ public class Controller{
 
    }
 
-
+///////////////////////////////////////////////////////////////////////
+//
+///////////////////////////////////////////////////////////////////////
    private void createRooms(int numPlayers){
 	   // create all rooms
      this.office = new CastingOffice(numPlayers);
@@ -344,13 +347,11 @@ public class Controller{
             // name of scene
             if (room.getTagName().equals("set")){
                if (create == true){
-                 System.out.println("size of neighbors list before = " + neighbors.size());
                   Scene current = new Scene(sceneName, shotCount, numPlayers, neighbors, offCardRoles);
                   scenes.add(current);
                   offCardRoles.clear();
                   neighbors.clear();
                   createCount++;
-                  System.out.println("size of neighbors list after = " + neighbors.size());
                }
                sceneName = room.getAttribute("name");
                create = true;
@@ -382,7 +383,6 @@ public class Controller{
          neighbors.add("General Store");
          neighbors.add("Bank");
          neighbors.add("trailer");
-         System.out.println("size of neighbors = " + neighbors.size());
          Scene current = new Scene(sceneName, shotCount, numPlayers, neighbors, offCardRoles);
          scenes.add(current);
          offCardRoles.clear();

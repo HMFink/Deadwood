@@ -46,18 +46,19 @@ public class Deadwood{
 		control.startDay();
 		int day = 1;
 
-/*
-			System.out.println("card names:");
-			for (int i = 0; i < control.getCards().size(); i++){
-				System.out.println(control.getCards().get(i).getName());
-			}
-*/
+		boolean moved;
+		boolean acted;
+
   		while (day < 4){
 				// check if all players have taken a turn this round
 				if (currentPlayer > numPlaying){
 					//System.out.println("currentPlayer reset to 1");
 					currentPlayer = 1;
 				}
+
+				// set boolean values to false at the beginning of each player's turn
+				moved = false;
+				acted = false;
 
     		valid = false;
     		userOptions();
@@ -68,6 +69,16 @@ public class Deadwood{
 
 						// player chooses to move
       			if (command.equals("move")){
+							// check if player has already move during the current turn
+							if (moved){
+								System.out.println("You may only move once per turn.");
+								continue;
+							}
+							// check if player has acted during current turn
+							if (acted){
+								System.out.println("You may not act and move in the same turn.");
+								continue;
+							}
  							//retrieves the rooms adjacent to players current position
 							ArrayList<String> adjRooms = new ArrayList<String>(control.getAdjacent(currentPlayer-1));
 							System.out.println("Rooms you can currently move to:");
@@ -89,22 +100,29 @@ public class Deadwood{
            			if (control.getPlayers().get(currentPlayer-1).move(room, adjRooms)) {
              				System.out.println("You have moved to " + control.getPlayers().get(currentPlayer-1).getCurrRoom());
 										validRoom = true;
+										moved = true;
           			}
 								else {
 										System.out.println("Invalid room! Please enter one of the rooms listed above");
 								}
 							}
 							adjRooms.clear();
-
       			}
 
 						// player chooses to take a role
 						else if (command.equals("work")){
+							// check if player is already working a role
+							if (control.getPlayers().get(currentPlayer-1).getRole() != null){
+								System.out.println("You must finishing working your current role before you can take another.");
+								continue;
+							}
+							// prompt player for the desired role to work
 							System.out.print("Enter the role you would like to take: ");
 							String role = in.next();
 							if (in.hasNext()) {
 								role += in.nextLine();
 							}
+							// check if the entered role is valid and the player is high enough level
          			if (control.canWork(role, currentPlayer-1)){
            				System.out.println("You are now working this role!");
         			}
@@ -114,6 +132,20 @@ public class Deadwood{
 
 							// player chooses to act
       			} else if (command.equals("act")){
+								// check if player is currently working a role
+								if (control.getPlayers().get(currentPlayer-1).getRole() == null){
+									System.out.println("You are not working a role.");
+									continue;
+								}
+								// check if player has moved during the current turn
+								if (moved){
+									System.out.println("You may not move and act in the same turn.");
+									continue;
+								}
+								// check if the player has already acted during current Turn
+								if (acted){
+									System.out.println("You may only act once per turn.");
+								}
         				if (control.getPlayers().get(currentPlayer-1).act()) {
 									System.out.println("Acted!");
 								} else {
@@ -132,13 +164,21 @@ public class Deadwood{
 								} else {
 									System.out.println("Fail!");
 								}
+
       			} else if (command.equals("who")){
         				System.out.println("Player " + currentPlayer + ": " + control.getPlayers().get(currentPlayer-1).getName());
 								System.out.println("Current Money: " + control.getPlayers().get(currentPlayer-1).getMoney());
 								System.out.println("Current Credits: " + control.getPlayers().get(currentPlayer-1).getCredit());
 								System.out.println("Current Level: " + control.getPlayers().get(currentPlayer-1).getLevel());
 								System.out.println("Current Room: " + control.getPlayers().get(currentPlayer-1).getCurrRoom());
-								System.out.println("Current Role: " + control.getPlayers().get(currentPlayer-1).getRole());
+								Role tempRole = control.getPlayers().get(currentPlayer-1).getRole();
+								if (tempRole != null){
+									System.out.println("Current Role: " + control.getPlayers().get(currentPlayer-1).getRole().getName());
+								}
+								else{
+									System.out.println("Current role: none");
+								}
+
       			} else if (command.equals("where")){
         				System.out.println("Current Room: " + control.getPlayers().get(currentPlayer-1).getCurrRoom());
 								String sceneName = control.getPlayers().get(currentPlayer-1).getCurrRoom();
