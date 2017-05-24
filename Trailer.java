@@ -4,11 +4,10 @@ public class Trailer {
 
 	// Fields
 	private String name;
-	private int numPlay;
 	private ArrayList<String> neighbors;
 
 	// Constructor
-	public Trailer (int numPlayers) {
+	public Trailer () {
 
 		name = "trailer";
 		neighbors = new ArrayList<String>();

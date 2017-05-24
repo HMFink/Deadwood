@@ -85,7 +85,7 @@ public class Deadwood{
 							// displays adjacent rooms to player
 							//System.out.println("size of adjRoom ArrayList: " + adjRooms.size());
 							for (int i = 0; i < adjRooms.size(); i++){
-								System.out.println(adjRooms.get(i));
+								System.out.println("-" + adjRooms.get(i));
 							}
 							// player will be prompted for a valid room to move to until
 							// this is true
@@ -99,6 +99,8 @@ public class Deadwood{
 								// check if given room is valid
            			if (control.getPlayers().get(currentPlayer-1).move(room, adjRooms)) {
              				System.out.println("You have moved to " + control.getPlayers().get(currentPlayer-1).getCurrRoom());
+										// change the players current scene to the requested scene
+										control.getPlayers().get(currentPlayer-1).setScene(control.getScene(room));
 										validRoom = true;
 										moved = true;
           			}
@@ -111,10 +113,32 @@ public class Deadwood{
 
 						// player chooses to take a role
 						else if (command.equals("work")){
+							//check if the player is in the trailer or the casting office
+							if (control.getPlayers().get(currentPlayer-1).getCurrRoom().equals("trailer") ||
+									control.getPlayers().get(currentPlayer-1).getCurrRoom().equals("office")){
+										System.out.println("There are no roles to work in this room.");
+										continue;
+									}
 							// check if player is already working a role
 							if (control.getPlayers().get(currentPlayer-1).getRole() != null){
-								System.out.println("You must finishing working your current role before you can take another.");
+								System.out.println("You must finish working your current role before you can take another.");
 								continue;
+							}
+							// display available roles in current scene
+							System.out.println("Available roles off the card:");
+							Scene currScene = control.getPlayers().get(currentPlayer-1).getCurrScene();
+							ArrayList<Role> offRoles = currScene.getOffCardRoles();
+							for (int i = 0; i < offRoles.size(); i++){
+								if (offRoles.get(i).getPlayerNum() == -1){
+									System.out.println("-" + offRoles.get(i).getName() + ", role level: " + offRoles.get(i).getLevel());
+								}
+							}
+							System.out.println("Available roles on the card:");
+							Card currCard = control.getPlayers().get(currentPlayer-1).getCurrScene().getCard();
+							for (int i = 0; i < currCard.getRoles().size(); i++){
+								if (currCard.getRoles().get(i).getPlayerNum() == -1){
+									System.out.println("-" + currCard.getRoles().get(i).getName() + ", role level: " + currCard.getRoles().get(i).getLevel());
+								}
 							}
 							// prompt player for the desired role to work
 							System.out.print("Enter the role you would like to take: ");
@@ -134,7 +158,7 @@ public class Deadwood{
       			} else if (command.equals("act")){
 								// check if player is currently working a role
 								if (control.getPlayers().get(currentPlayer-1).getRole() == null){
-									System.out.println("You are not working a role.");
+									System.out.println("You are not currently working a role.");
 									continue;
 								}
 								// check if player has moved during the current turn
@@ -145,12 +169,16 @@ public class Deadwood{
 								// check if the player has already acted during current Turn
 								if (acted){
 									System.out.println("You may only act once per turn.");
+									continue;
 								}
-        				if (control.getPlayers().get(currentPlayer-1).act()) {
-									System.out.println("Acted!");
-								} else {
-									System.out.println("Fail!");
+								// act
+								if (control.getPlayers().get(currentPlayer-1).act() == 1){
+									System.out.println("That's a wrap! The scene is over.");
+									control.payout(currentPlayer-1);
 								}
+								acted = true;
+								continue;
+
 								// player chooses to rehearse
       			} else if (command.equals("rehearse")){
 								if (control.getPlayers().get(currentPlayer-1).rehearse()) {
@@ -167,9 +195,9 @@ public class Deadwood{
 
       			} else if (command.equals("who")){
         				System.out.println("Player " + currentPlayer + ": " + control.getPlayers().get(currentPlayer-1).getName());
-								System.out.println("Current Money: " + control.getPlayers().get(currentPlayer-1).getMoney());
-								System.out.println("Current Credits: " + control.getPlayers().get(currentPlayer-1).getCredit());
-								System.out.println("Current Level: " + control.getPlayers().get(currentPlayer-1).getLevel());
+								System.out.println("Money: " + control.getPlayers().get(currentPlayer-1).getMoney());
+								System.out.println("Credits: " + control.getPlayers().get(currentPlayer-1).getCredit());
+								System.out.println("Level: " + control.getPlayers().get(currentPlayer-1).getLevel());
 								System.out.println("Current Room: " + control.getPlayers().get(currentPlayer-1).getCurrRoom());
 								Role tempRole = control.getPlayers().get(currentPlayer-1).getRole();
 								if (tempRole != null){
@@ -182,7 +210,28 @@ public class Deadwood{
       			} else if (command.equals("where")){
         				System.out.println("Current Room: " + control.getPlayers().get(currentPlayer-1).getCurrRoom());
 								String sceneName = control.getPlayers().get(currentPlayer-1).getCurrRoom();
+								if (control.getPlayers().get(currentPlayer-1).getCurrRoom().equals("trailer") ||
+										control.getPlayers().get(currentPlayer-1).getCurrRoom().equals("office")){
+											continue;
+										}
 								System.out.println("Shooting: " + control.getCard(sceneName));
+								System.out.println("Available roles off the card:");
+								Scene currScene = control.getPlayers().get(currentPlayer-1).getCurrScene();
+								ArrayList<Role> offRoles = currScene.getOffCardRoles();
+								for (int i = 0; i < offRoles.size(); i++){
+									if (offRoles.get(i).getPlayerNum() == -1){
+										System.out.println("-" + offRoles.get(i).getName() + ", role level: " + offRoles.get(i).getLevel());
+									}
+								}
+								System.out.println("Available roles on the card:");
+								Card currCard = control.getPlayers().get(currentPlayer-1).getCurrScene().getCard();
+								for (int i = 0; i < currCard.getRoles().size(); i++){
+									if (currCard.getRoles().get(i).getPlayerNum() == -1){
+										System.out.println("-" + currCard.getRoles().get(i).getName() + ", role level: " + currCard.getRoles().get(i).getLevel());
+									}
+								}
+								System.out.println("Shot counters on scene: " + currScene.getShotCount());
+
       			} else if (command.equals("end")){
         				System.out.println("Turn ended");
 								valid = true;
@@ -190,8 +239,5 @@ public class Deadwood{
       			}
     		}
   		}
-	}
-/* NOTES *****************************************************
- * HELP: http://www.vogella.com/tutorials/SWT/article.html
- *************************************************************/
-}
+	}// end main
+}// end class

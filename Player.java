@@ -1,6 +1,8 @@
 //Player.java
 
 import java.util.ArrayList;
+import java.util.Random;
+
 public class Player{
 
   private String name;
@@ -23,6 +25,7 @@ public class Player{
       rehearsals = 0;
       currRoom = "trailer";
       role = null;
+      scene = null;
    }
 
 ////////////////////////////////////////////////////////////////////
@@ -39,6 +42,10 @@ public class Player{
 
   public void changeRole(Role role){
     this.role = role;
+  }
+
+  public void clearRole(){
+    role = null;
   }
 
   public String getCurrRoom(){
@@ -95,12 +102,76 @@ public class Player{
       rehearsals = 0;
    }
 
+   public void setScene(Scene newScene){
+     this.scene = newScene;
+   }
+
+   public Scene getCurrScene(){
+     return scene;
+   }
+
 ///////////////////////////////////////////////////////////////////////
 // Behavior methods
 ///////////////////////////////////////////////////////////////////////
 
-   public boolean act(){
-     return true;
+///////////////////////////////////////////////////////////////////////
+//
+// Returns: 0 if scene not finished, 1 if scene finished
+///////////////////////////////////////////////////////////////////////
+   public int act(){
+
+     Random rand = new Random();
+     int roll = rand.nextInt(6) + 1;
+     // player's role is on the card
+     if (role.mainOrExtra()){
+       System.out.println("Scene budget:  " + scene.getCard().getBudget());
+       System.out.println("Your roll + rehearsal counters (if applicable) = " + (roll + rehearsals));
+
+       if ((roll + rehearsals) >= scene.getCard().getBudget()){
+         System.out.println("Acting attempt succeed!");
+         System.out.println("Shot counter removed from scene.");
+         System.out.println("You have received two credits for your work!");
+         credit += 2;
+         scene.removeShotCounter();
+         System.out.println("Remaining shot counters on scene: " + scene.getShotCount());
+         if (scene.getShotCount() == 0){
+           return 1;
+         }
+         else{
+           return 0;
+         }
+       }
+       else{
+         System.out.println("Acting attempt failed!");
+         return 0;
+       }
+     }
+     // player's role is off the card
+     else{
+         System.out.println("Scene budget:  " + scene.getCard().getBudget());
+         System.out.println("Your roll + rehearsal counters (if applicable) = " + (roll + rehearsals));
+         if ((roll + rehearsals) >= scene.getCard().getBudget()){
+           System.out.println("Acting attempt succeed!");
+           System.out.println("Shot counter removed from scene.");
+           System.out.println("You have received one dollar and one credit for your work!");
+           money++;
+           credit++;
+           scene.removeShotCounter();
+           System.out.println("Remaining shot counters on scene: " + scene.getShotCount());
+           if (scene.getShotCount() == 0){
+             return 1;
+           }
+           else{
+             return 0;
+           }
+         }
+         else{
+           System.out.println("Acting attempt failed!");
+           System.out.println("You receive one dollar anyway.");
+           money++;
+           return 0;
+         }
+     }
    }// end act()
 
    public boolean rehearse(){

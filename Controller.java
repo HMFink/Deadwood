@@ -31,7 +31,7 @@ public class Controller{
       currentCard = 0;
       Collections.shuffle(cards);
       createPlayers(numPlayers);
-      createRooms(numPlayers);
+      createRooms();
    }
 
 
@@ -72,7 +72,9 @@ public class Controller{
    }// end getPlayers()
 
 
-
+///////////////////////////////////////////////////////////////////////
+//
+///////////////////////////////////////////////////////////////////////
    public void startDay () {
       for (int i=0; i<playerCount; i++) {
         players.get(i).setCurrRoom("trailer");
@@ -83,6 +85,9 @@ public class Controller{
       }
    }
 
+///////////////////////////////////////////////////////////////////////
+//
+///////////////////////////////////////////////////////////////////////
    public void endDay () {
      day++;
      if (day==3) {
@@ -92,6 +97,9 @@ public class Controller{
      }
    }
 
+///////////////////////////////////////////////////////////////////////
+//
+///////////////////////////////////////////////////////////////////////
    private void calcWinner () {
      int sumValue = 0;
      int maxSum = 0;
@@ -108,6 +116,9 @@ public class Controller{
      System.out.println("The winner is " + players.get(winner).getName());
    }
 
+///////////////////////////////////////////////////////////////////////
+//
+///////////////////////////////////////////////////////////////////////
    public String getCard(String scene) {
      for (int i = 0; i < scenes.size(); i++){
        String sceneName = scenes.get(i).getName();
@@ -119,10 +130,30 @@ public class Controller{
      return null;
    }
 
+///////////////////////////////////////////////////////////////////////
+//
+///////////////////////////////////////////////////////////////////////
+public Scene getScene(String scene){
+   for (int i = 0; i < scenes.size(); i++){
+     String sceneName = scenes.get(i).getName();
+    // System.out.println("sceneName = " + sceneName);
+      if (sceneName.equals(scene)){
+        return scenes.get(i);
+      }
+   }
+   return null;
+ }
+
+///////////////////////////////////////////////////////////////////////
+//
+///////////////////////////////////////////////////////////////////////
    public ArrayList<Card> getCards(){
       return cards;
    }
 
+///////////////////////////////////////////////////////////////////////
+//
+///////////////////////////////////////////////////////////////////////
    public ArrayList<Scene> getScenes(){
      return scenes;
    }
@@ -212,6 +243,81 @@ public class Controller{
         return false;
       }
   }// end canWork()
+
+///////////////////////////////////////////////////////////////////////
+//
+///////////////////////////////////////////////////////////////////////
+public void payout(int currPlayer){
+
+  boolean onCard = false;
+  // scene to payout
+  Scene currScene = players.get(currPlayer).getCurrScene();
+  // check if at least one player was acting on the cardList
+  for (int i = 0; i < currScene.getCard().getRoles().size(); i++){
+    if (currScene.getCard().getRoles().get(i).getPlayerNum() != -1){
+      onCard = true;
+    }
+  }
+
+  // payout with on-card bonuses
+  if (onCard){
+    Random rand = new Random();
+    int budget = currScene.getCard().getBudget();
+    int endRolls[] = new int[budget];
+
+    for (int i = 0; i < budget; i++){
+      endRolls[i] = rand.nextInt(6) + 1;
+    }
+    // sort the rolls from lowest to highest
+    Arrays.sort(endRolls);
+    int numCardRoles = currScene.getCard().getRoles().size();
+    int bonuses[] = new int[numCardRoles];
+    int j = 0;
+    // assign dice rolls to on-card roles for bonus amounts
+    for (int i = budget-1; i >= 0 ; i--){
+      if (j == numCardRoles-1){
+        j = 0;
+      }
+      bonuses[j] += endRolls[i];
+      j++;
+    }
+
+    // pay bonuses to players with on card roles
+    for (int i = 0; i < numCardRoles; i++){
+      int player = currScene.getCard().getRoles().get(i).getPlayerNum();
+      if (player != -1){
+        player -= 1;
+        players.get(player).changeMoney(bonuses[i]);
+        System.out.println(players.get(player).getName() + " received " + bonuses[i] + " dollars as a scene wrap bonus.");
+        players.get(player).clearRole();
+      }
+    }
+
+    int numExtraRoles = currScene.getOffCardRoles().size();
+
+    for (int i = 0; i < numExtraRoles; i++){
+      int player = currScene.getOffCardRoles().get(i).getPlayerNum();
+      if (player != -1){
+        player -= 1;
+        players.get(player).changeMoney(currScene.getOffCardRoles().get(i).getLevel());
+        System.out.println(players.get(player).getName() + " received " + currScene.getOffCardRoles().get(i).getLevel() + " dollars as a scene wrap bonus.");
+        players.get(player).clearRole();
+      }
+    }
+  }
+  else{
+    int numOffCardRoles = currScene.getOffCardRoles().size();
+    for (int i = 0; i < numOffCardRoles; i++){
+      int player = currScene.getOffCardRoles().get(i).getPlayerNum();
+      if (player != -1){
+        player -= 1;
+        players.get(player).clearRole();
+      }
+    }
+    System.out.println("No actors on the card, so no bonuses this time!");
+  }
+}// end payout()
+
 
 ///////////////////////////////////////////////////////////////////////
 //
@@ -312,10 +418,10 @@ public class Controller{
 ///////////////////////////////////////////////////////////////////////
 //
 ///////////////////////////////////////////////////////////////////////
-   private void createRooms(int numPlayers){
+   private void createRooms(){
 	   // create all rooms
-     this.office = new CastingOffice(numPlayers);
-     this.trailer = new Trailer(numPlayers);
+     this.office = new CastingOffice();
+     this.trailer = new Trailer();
 
 
       DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -347,8 +453,9 @@ public class Controller{
             // name of scene
             if (room.getTagName().equals("set")){
                if (create == true){
-                  Scene current = new Scene(sceneName, shotCount, numPlayers, neighbors, offCardRoles);
+                  Scene current = new Scene(sceneName, shotCount, neighbors, offCardRoles);
                   scenes.add(current);
+                  shotCount = 0;
                   offCardRoles.clear();
                   neighbors.clear();
                   createCount++;
@@ -383,7 +490,7 @@ public class Controller{
          neighbors.add("General Store");
          neighbors.add("Bank");
          neighbors.add("trailer");
-         Scene current = new Scene(sceneName, shotCount, numPlayers, neighbors, offCardRoles);
+         Scene current = new Scene(sceneName, shotCount, neighbors, offCardRoles);
          scenes.add(current);
          offCardRoles.clear();
          neighbors.clear();

@@ -4,31 +4,25 @@ public class CastingOffice {
 
 	// Fields
 	private String name;
-	private int present[];
 	final int money[] = {4, 10, 18, 28, 40};
 	final int credit[] = {5, 10, 15, 20, 25};
 	private ArrayList<String> neighbors;
 
 	// Constructor
-	CastingOffice (int numPlayers) {
+	CastingOffice () {
 
 		name = "office";
 		neighbors = new ArrayList<String>();
 		neighbors.add("Train Station");
 		neighbors.add("Ranch");
 		neighbors.add("Secret Hideout");
-		present = new int[numPlayers];
-			// add 0 for absent
-		for (int i=0; i<numPlayers; i++) {
-			present[i]=0;
-		}
-
 	}
 	// Methods
 	public ArrayList<String> getNeighbors(){
 		return neighbors;
 	}
 
+/*
 	void Upgrade (Player p, int level, int type) {
 		// variables
 		int amt = 0;
@@ -72,4 +66,5 @@ public class CastingOffice {
 			return false;
 		}
 	}
+*/	
 }
