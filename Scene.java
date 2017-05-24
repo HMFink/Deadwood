@@ -8,6 +8,7 @@ public class Scene {
 	int budget;
 	ArrayList<String> neighbors;
 	Card card;
+	boolean wrapped;
 
 	// Constructor
 	Scene (String name, int shots, ArrayList<String> neighList, ArrayList<Role> offRoles){
@@ -16,6 +17,7 @@ public class Scene {
 		this.neighbors = new ArrayList<String>(neighList);
 		//this.neighbors.addAll(neighList);
 		offCardRoles = new ArrayList<Role>(offRoles);
+		wrapped = false;
 	}
 
 ///////////////////////////////////////////////////////////////////////
@@ -53,5 +55,13 @@ public class Scene {
 
 	public void removeShotCounter(){
 		shotCount--;
+	}
+
+	public void wrapScene(){
+		wrapped = true;
+	}
+
+	public boolean getWrap(){
+		return wrapped;
 	}
 }

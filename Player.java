@@ -174,13 +174,20 @@ public class Player{
      }
    }// end act()
 
+
+
    public boolean rehearse(){
+
+     int budget = scene.getCard().getBudget();
+     if ((level + rehearsals) >= budget){
+       System.out.println("You cannot rehearse anymore for this role.");
+       return false;
+     }
+
+     System.out.println("Rehearse successful! A +1 counter will be added to your rolls for the remainder of the scene.");
+     rehearsals++;
      return true;
    }// end rehearse()
-
-   public boolean upgrade(){
-     return true;
-   }// end upgrade
 
 ///////////////////////////////////////////////////////////////////////
 // Function name: move()
@@ -192,7 +199,7 @@ public class Player{
    public boolean move(String room, ArrayList<String> adjRooms){
      //ArrayList<String> adjRooms = controller.getAdjacent();
      for (int i = 0; i < adjRooms.size(); i++){
-        if (adjRooms.get(i).contains(room)){
+        if (adjRooms.get(i).equals(room)){
            currRoom = adjRooms.get(i);
            return true;
         }
@@ -200,10 +207,61 @@ public class Player{
      return false;
    }// end move()
 
-   public boolean takeRole(String role){
+   public void upgrade(int upLevel, String payment){
 
+     int cost = 0;
+     // if player chose to pay with money
+     if (payment.equalsIgnoreCase("money")){
+       if (upLevel == 2){
+         cost = 4;
+       }
+       else if (upLevel == 3){
+         cost = 10;
+       }
+       else if (upLevel == 4){
+         cost = 18;
+       }
+       else if (upLevel == 5){
+         cost = 28;
+       }
+       else if (upLevel == 6){
+         cost = 40;
+       }
+        if (money >= cost){
+          level = upLevel;
+          money -= cost;
+          System.out.println("Your level has been upgraded!");
+        }
+        else{
+          System.out.println("You don't have enough money to pay for the selected level.");
+        }
+     }
+     else if (payment.equalsIgnoreCase("credit")){
+       if (upLevel == 2){
+         cost = 5;
+       }
+       else if (upLevel == 3){
+         cost = 10;
+       }
+       else if (upLevel == 4){
+         cost = 15;
+       }
+       else if (upLevel == 5){
+         cost = 20;
+       }
+       else if (upLevel == 6){
+         cost = 25;
+       }
 
-     return true;
-   }// end takeRole()
+       if (credit >= cost){
+         level = upLevel;
+         credit -= cost;
+         System.out.println("Your level has been upgraded!");
+       }
+       else{
+         System.out.println("You don't have enough credits to pay for the selected level");
+       }
+     }
+   }// end upgrade()
 
 }// end Player class

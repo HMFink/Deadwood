@@ -22,33 +22,27 @@ public class CastingOffice {
 		return neighbors;
 	}
 
-/*
+
 	void Upgrade (Player p, int level, int type) {
 		// variables
 		int amt = 0;
 		boolean enough = false;
 		// check if present
-		int num = p.getIdNum();
-		if (present[num]==1) {
-			// determine credits or money
-			if (type == 0) { // 0 is money
-				amt = p.getMoney();
-			} else { // anything non-zero is credits
-				amt = p.getCredit();
-			}
-			// checks if enough credits/money
-			enough = CheckMoneyCredit(amt, level, type);
-			// upgrades player stats
-			if (enough) {
-				// do upgrade and return
-				p.setLevel(level);
-			} else {
-				// display error message and continue
-				//dispMessage("Not enough credits/money. Try again with other type.");
-			}
+		// determine credits or money
+		if (type == 0) { // 0 is money
+			amt = p.getMoney();
+		} else { // anything non-zero is credits
+			amt = p.getCredit();
+		}
+		// checks if enough credits/money
+		enough = CheckMoneyCredit(amt, level, type);
+		// upgrades player stats
+		if (enough) {
+			// do upgrade and return
+			p.setLevel(level);
 		} else {
 			// display error message and continue
-			//dispMessage("Not in the casting office!");
+			//dispMessage("Not enough credits/money. Try again with other type.");
 		}
 	}
 	boolean CheckMoneyCredit (int amount, int level, int type) {
@@ -66,5 +60,5 @@ public class CastingOffice {
 			return false;
 		}
 	}
-*/	
+
 }

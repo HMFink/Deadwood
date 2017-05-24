@@ -190,6 +190,15 @@ public Scene getScene(String scene){
       return null;
    }
 
+   public void displayLevels(){
+     System.out.println("Level  Money  Credit");
+     System.out.println("  2      4       5");
+     System.out.println("  3     10      10");
+     System.out.println("  4     18      15");
+     System.out.println("  5     28      20");
+     System.out.println("  6     40      25");
+   }
+
 ///////////////////////////////////////////////////////////////////////
 // Function name: canWork()
 // Behavior: returns true if the given role is in the same scene as the
@@ -227,13 +236,11 @@ public Scene getScene(String scene){
         }
       }
 
-      if (newRole.getPlayerNum() != -1){
-        System.out.println("Another player is currently working this role.");
-        return false;
-      }
-
-      else if (in && level){
-        //System.out.println("You are now working this role.");
+      if (in && level){
+        if (newRole.getPlayerNum() != -1){
+          System.out.println("Another player is currently working this role.");
+          return false;
+        }
         players.get(player).changeRole(newRole);
         newRole.addPlayer(players.get(player).getIdNum());
 
@@ -249,9 +256,11 @@ public Scene getScene(String scene){
 ///////////////////////////////////////////////////////////////////////
 public void payout(int currPlayer){
 
+
   boolean onCard = false;
   // scene to payout
   Scene currScene = players.get(currPlayer).getCurrScene();
+  currScene.wrapScene();
   // check if at least one player was acting on the cardList
   for (int i = 0; i < currScene.getCard().getRoles().size(); i++){
     if (currScene.getCard().getRoles().get(i).getPlayerNum() != -1){
@@ -288,8 +297,9 @@ public void payout(int currPlayer){
       if (player != -1){
         player -= 1;
         players.get(player).changeMoney(bonuses[i]);
-        System.out.println(players.get(player).getName() + " received " + bonuses[i] + " dollars as a scene wrap bonus.");
+        System.out.println(players.get(player).getName() + " received $" + bonuses[i] + " as a scene wrap bonus.");
         players.get(player).clearRole();
+        players.get(player).clearRehearsals();
       }
     }
 
@@ -300,8 +310,9 @@ public void payout(int currPlayer){
       if (player != -1){
         player -= 1;
         players.get(player).changeMoney(currScene.getOffCardRoles().get(i).getLevel());
-        System.out.println(players.get(player).getName() + " received " + currScene.getOffCardRoles().get(i).getLevel() + " dollars as a scene wrap bonus.");
+        System.out.println(players.get(player).getName() + " received $" + currScene.getOffCardRoles().get(i).getLevel() + " as a scene wrap bonus.");
         players.get(player).clearRole();
+        players.get(player).clearRehearsals();
       }
     }
   }
@@ -317,7 +328,6 @@ public void payout(int currPlayer){
     System.out.println("No actors on the card, so no bonuses this time!");
   }
 }// end payout()
-
 
 ///////////////////////////////////////////////////////////////////////
 //
