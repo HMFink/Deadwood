@@ -4,4 +4,8 @@ The Deadwood.java will contain the startup code for the entire program calling t
 
 Hannah - GUI
 
-Trevor - Fixing errors from text-based version
+Trevor - moving, taking roles, acting and payout all work.
+      To do: -rehearsing
+             -leveling up
+             -changing days
+             -calc winner
