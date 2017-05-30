@@ -5,9 +5,10 @@ import java.io.IOException;
 import javax.xml.parsers.*;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
+import java.awt.*;
 
 
-public class Controller{
+public class Controller {
 
    private int day = 1;
    private int sceneCount = 0;
@@ -33,7 +34,6 @@ public class Controller{
       createPlayers(numPlayers);
       createRooms();
    }
-
 
 ///////////////////////////////////////////////////////////////////////
 // Function Name: createPlayers()
