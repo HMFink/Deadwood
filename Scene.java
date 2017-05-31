@@ -9,15 +9,19 @@ public class Scene {
 	ArrayList<String> neighbors;
 	Card card;
 	boolean wrapped;
+	int x;
+	int y;
 
 	// Constructor
-	Scene (String name, int shots, ArrayList<String> neighList, ArrayList<Role> offRoles){
+	Scene (String name, int shots, ArrayList<String> neighList, ArrayList<Role> offRoles, int x, int y){
 		this.name = name;
 		shotCount = shots;
 		this.neighbors = new ArrayList<String>(neighList);
 		//this.neighbors.addAll(neighList);
 		offCardRoles = new ArrayList<Role>(offRoles);
 		wrapped = false;
+		this.x = x;
+		this.y = y;
 	}
 
 ///////////////////////////////////////////////////////////////////////
@@ -63,5 +67,13 @@ public class Scene {
 
 	public boolean getWrap(){
 		return wrapped;
+	}
+
+	public int getX(){
+		return x;
+	}
+
+	public int getY(){
+		return y;
 	}
 }

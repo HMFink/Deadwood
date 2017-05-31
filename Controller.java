@@ -52,6 +52,11 @@ public class Controller {
 	        players.add(temp);
 	        System.out.println();
       }
+      players.get(0).setColor("v");
+      players.get(1).setColor("c");
+      if (numPlayers > 2){
+        players.get(2).setColor("o");
+      }
    }// end cratePlayers
 
 
@@ -433,7 +438,9 @@ public void payout(int currPlayer){
    }
 
 ///////////////////////////////////////////////////////////////////////
-//
+// Function name: createRooms()
+// Behavior: parses the xml document board.xml and creates an arrayList
+// the scene rooms
 ///////////////////////////////////////////////////////////////////////
    private void createRooms(){
 	   // create all rooms
@@ -452,19 +459,24 @@ public void payout(int currPlayer){
          int shotCount = 0;
          ArrayList<Role> offCardRoles = new ArrayList<Role>();
          ArrayList<String> neighbors = new ArrayList<String>();
+         String xSceneString = "";
+         int xScene = 0;
+         String ySceneString = "";
+         int yScene = 0;
 
          String roleName = "";
          String roleLevel = "";
          String roleLine = "";
-         String xString = "";
-         int x = 0;
-         String yString = "";
-         int y = 0;
+         String xRoleString = "";
+         int xRole = 0;
+         String yRoleString = "";
+         int yRole = 0;
          int level = 0;
 
          boolean create = false;
          int createCount = 0;
          boolean roleArea = false;
+         boolean sceneArea = true;
 
          for (int i = 0; i < roomList.getLength(); i++){
 
@@ -474,13 +486,14 @@ public void payout(int currPlayer){
             // name of scene
             if (room.getTagName().equals("set")){
                if (create){
-                  Scene current = new Scene(sceneName, shotCount, neighbors, offCardRoles);
+                  Scene current = new Scene(sceneName, shotCount, neighbors, offCardRoles, xScene, yScene);
                   scenes.add(current);
                   shotCount = 0;
                   offCardRoles.clear();
                   neighbors.clear();
                   createCount++;
                   roleArea = false;
+                  sceneArea = true;
                }
                sceneName = room.getAttribute("name");
                create = true;
@@ -504,15 +517,23 @@ public void payout(int currPlayer){
                roleLine = room.getTextContent();
             }
             else if (room.getTagName().equals("area")){
+              if (sceneArea){
+                xSceneString = room.getAttribute("x");
+                xScene = Integer.valueOf(xSceneString);
+                ySceneString = room.getAttribute("y");
+                yScene = Integer.valueOf(ySceneString);
+                sceneArea = false;
+                continue;
+              }
               if (!roleArea){
                 continue;
               }
-              xString = room.getAttribute("x");
-              x = Integer.valueOf(xString);
-              yString = room.getAttribute("y");
-              y = Integer.valueOf(yString);
+              xRoleString = room.getAttribute("x");
+              xRole = Integer.valueOf(xRoleString);
+              yRoleString = room.getAttribute("y");
+              yRole = Integer.valueOf(yRoleString);
 
-              Role role = new Role(level, false, roleName, x, y, roleLine);
+              Role role = new Role(level, false, roleName, xRole, yRole, roleLine);
               offCardRoles.add(role);
             }
             else if (room.getTagName().equals("trailer")){
@@ -525,7 +546,7 @@ public void payout(int currPlayer){
          neighbors.add("General Store");
          neighbors.add("Bank");
          neighbors.add("trailer");
-         Scene current = new Scene(sceneName, shotCount, neighbors, offCardRoles);
+         Scene current = new Scene(sceneName, shotCount, neighbors, offCardRoles, xScene, yScene);
          scenes.add(current);
          offCardRoles.clear();
          neighbors.clear();

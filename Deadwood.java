@@ -49,12 +49,33 @@ public class Deadwood{
 		// create and display board
 		Board gameBoard = new Board();
 		gameBoard.setVisible(true);
-		
+
 		// used to determine if the user input was valid or not
 		boolean valid;
 
 		// start the first day of the game
 		control.startDay();
+		ArrayList<Scene> scenes = control.getScenes();
+		int sceneLen = scenes.size();
+
+		// place a card on each scene room
+		for (int i = 0; i < sceneLen; i++){
+			String cardNum = scenes.get(i).getCard().getCardNum();
+			int x = scenes.get(i).getX();
+			int y = scenes.get(i).getY();
+			gameBoard.addCard(cardNum, x, y);
+		}
+
+		// place all players in the trailer
+		for (int i = 0; i < numPlaying; i++){
+			int x = 991;
+			int y = 270;
+			String color = control.getPlayers().get(i).getColor();
+			String level = Integer.toString(control.getPlayers().get(i).getLevel());
+			gameBoard.addPlayer(color, level, x, y);
+			y += 60;
+			System.out.println("placed a player in the trailer");
+		}
 		int day = 1;
 
 		boolean moved;

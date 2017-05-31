@@ -86,11 +86,11 @@ public class Board extends JFrame {
 
   public void addCard (String cardName, int x, int y) {
     cardlabel = new JLabel();
-    // get name
     String card = cardName + ".png";
-    ImageIcon cIcon =  new ImageIcon(cardName);
+    ImageIcon cIcon =  new ImageIcon(card);
     cardlabel.setIcon(cIcon);
     cardlabel.setBounds(x,y,cIcon.getIconWidth(),cIcon.getIconHeight());
+    bPane.add(cardlabel,new Integer(2));
     cardlabel.setOpaque(true);
   }
 

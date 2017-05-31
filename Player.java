@@ -14,6 +14,7 @@ public class Player{
    private String currRoom;
    private Role role;
    private Scene scene;
+   private String color;
 
    // player contructor
    public Player(int num, String name){
@@ -23,6 +24,7 @@ public class Player{
       credit = 0;
       level = 1;
       rehearsals = 0;
+      this.color = "";
       currRoom = "trailer";
       role = null;
       scene = null;
@@ -31,6 +33,14 @@ public class Player{
 ////////////////////////////////////////////////////////////////////
 // getters & setters
 ////////////////////////////////////////////////////////////////////
+
+  public void setColor(String color){
+    this.color = color;
+  }
+
+  public String getColor(){
+    return color;
+  }
 
   public String getName(){
     return name;

@@ -7,6 +7,8 @@ public class CastingOffice {
 	final int money[] = {4, 10, 18, 28, 40};
 	final int credit[] = {5, 10, 15, 20, 25};
 	private ArrayList<String> neighbors;
+	int x;
+	int y;
 
 	// Constructor
 	CastingOffice () {
@@ -16,6 +18,8 @@ public class CastingOffice {
 		neighbors.add("Train Station");
 		neighbors.add("Ranch");
 		neighbors.add("Secret Hideout");
+		x = 9;
+		y = 459;
 	}
 	// Methods
 	public ArrayList<String> getNeighbors(){
