@@ -342,16 +342,25 @@ public void payout(int currPlayer){
          // creates a NodeList of every element in the .xml file
          NodeList cardList = doc.getElementsByTagName("*");
 
+         // card attributes
          int cardCount = 0;
          String name = "";
          String budget = "";
          int cardNum = 1;
          String sceneLine = "";
 
+         // role attributes
          ArrayList<Role> roles = new ArrayList<Role>();
          String roleName = "";
          String roleLevel = "";
+         int level = 0;
          String roleLine = "";
+         String xString = "";
+         int x = 0;
+         String yString = "";
+         int y = 0;
+         //Role temp;
+
 
          boolean create = false;
 
@@ -374,6 +383,7 @@ public void payout(int currPlayer){
                   cards.add(current);
                   roles.clear();
                   createCount++;
+                  cardNum++;
                }
                name = card.getAttribute("name");
                budget = card.getAttribute("budget");
@@ -387,24 +397,27 @@ public void payout(int currPlayer){
                roleLevel = card.getAttribute("level");
                roleLine = card.getTextContent();
 
-               int level = Integer.valueOf(roleLevel);
-
-               // build a Role ArrayList to pass to the card
-               Role temp = new Role(level, true, roleName, roleLine);
-               roles.add(temp);
+               level = Integer.valueOf(roleLevel);
 
             }
-            cardNum++;
-         }
 
+            else if (card.getTagName().equals("area")){
+              xString = card.getAttribute("x");
+              x = Integer.valueOf(xString);
+              yString = card.getAttribute("y");
+              y = Integer.valueOf(yString);
+
+              // build a Role ArrayList to pass to the card
+              Role temp = new Role(level, true, roleName, x, y, roleLine);
+              roles.add(temp);
+            }
+         }
          int budg = Integer.valueOf(budget);
          String num = Integer.toString(cardNum);
          Card current = new Card(name, budg, num, sceneLine, roles);
          cards.add(current);
          roles.clear();
          createCount++;
-         System.out.println("card number = " + cardNum);
-
 
       }
       catch(ParserConfigurationException ex){
@@ -443,11 +456,15 @@ public void payout(int currPlayer){
          String roleName = "";
          String roleLevel = "";
          String roleLine = "";
+         String xString = "";
+         int x = 0;
+         String yString = "";
+         int y = 0;
+         int level = 0;
 
          boolean create = false;
-
          int createCount = 0;
-
+         boolean roleArea = false;
 
          for (int i = 0; i < roomList.getLength(); i++){
 
@@ -456,13 +473,14 @@ public void payout(int currPlayer){
 
             // name of scene
             if (room.getTagName().equals("set")){
-               if (create == true){
+               if (create){
                   Scene current = new Scene(sceneName, shotCount, neighbors, offCardRoles);
                   scenes.add(current);
                   shotCount = 0;
                   offCardRoles.clear();
                   neighbors.clear();
                   createCount++;
+                  roleArea = false;
                }
                sceneName = room.getAttribute("name");
                create = true;
@@ -479,14 +497,27 @@ public void payout(int currPlayer){
                }
             }
             else if (room.getTagName().equals("part")){
+               roleArea = true;
                roleName = room.getAttribute("name");
                roleLevel = room.getAttribute("level");
-               int level = Integer.valueOf(roleLevel);
+               level = Integer.valueOf(roleLevel);
                roleLine = room.getTextContent();
-               Role role = new Role(level, false, roleName, roleLine);
-               offCardRoles.add(role);
             }
+            else if (room.getTagName().equals("area")){
+              if (!roleArea){
+                continue;
+              }
+              xString = room.getAttribute("x");
+              x = Integer.valueOf(xString);
+              yString = room.getAttribute("y");
+              y = Integer.valueOf(yString);
 
+              Role role = new Role(level, false, roleName, x, y, roleLine);
+              offCardRoles.add(role);
+            }
+            else if (room.getTagName().equals("trailer")){
+              break;
+            }
          }
 
          neighbors.clear();

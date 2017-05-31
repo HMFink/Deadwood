@@ -3,16 +3,20 @@ public class Role {
 	int playerNum;
 	int roleLevel;
 	String roleName;
+	int x;
+	int y;
 	String line;
 	boolean mainOrExtra; // true if main role false if extra
 
 	// Constructor
-	Role (int level, boolean onCard, String name, String line) {
+	Role (int level, boolean onCard, String name, int x, int y, String line) {
 		roleLevel = level;
 		mainOrExtra = onCard;
 		roleName = name;
 		this.line = line;
 		playerNum = -1;
+		this.x  = x;
+		this.y = y;
 	}
 
 	// Methods
