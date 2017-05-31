@@ -345,7 +345,7 @@ public void payout(int currPlayer){
          int cardCount = 0;
          String name = "";
          String budget = "";
-         String sceneNum = "";
+         int cardNum = 1;
          String sceneLine = "";
 
          ArrayList<Role> roles = new ArrayList<Role>();
@@ -369,7 +369,7 @@ public void payout(int currPlayer){
 
                if (create){
                   int budg = Integer.valueOf(budget);
-                  int num = Integer.valueOf(sceneNum);
+                  String num = Integer.toString(cardNum);
                   Card current = new Card(name, budg, num, sceneLine, roles);
                   cards.add(current);
                   roles.clear();
@@ -379,14 +379,6 @@ public void payout(int currPlayer){
                budget = card.getAttribute("budget");
                create = true;
 
-            }
-
-            //scene section
-            else if (card.getTagName().equals("scene")){
-               cardNode = cardList.item(i);
-               card = (Element) cardNode;
-               sceneNum = card.getAttribute("number");
-               sceneLine = card.getTextContent();
             }
 
             // parts sections
@@ -402,14 +394,16 @@ public void payout(int currPlayer){
                roles.add(temp);
 
             }
+            cardNum++;
          }
 
          int budg = Integer.valueOf(budget);
-         int num = Integer.valueOf(sceneNum);
+         String num = Integer.toString(cardNum);
          Card current = new Card(name, budg, num, sceneLine, roles);
          cards.add(current);
          roles.clear();
          createCount++;
+         System.out.println("card number = " + cardNum);
 
 
       }

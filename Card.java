@@ -6,16 +6,17 @@ public class Card{
 
    private String name;
    private int budget;
-   private int sceneNum;
+   private String cardNum;
    private String description;
    private ArrayList<Role> roles;
    private boolean flipped;
 
+
    // constructor
-   public Card(String name, int budget, int sceneNum, String description, ArrayList<Role> cardRoles){
+   public Card(String name, int budget, String cardNum, String description, ArrayList<Role> cardRoles){
       this.name = name;
       this.budget = budget;
-      this.sceneNum = sceneNum;
+      this.cardNum = cardNum;
       this.description = description;
       flipped = false;
       roles = new ArrayList<Role>(cardRoles);
@@ -38,8 +39,8 @@ public class Card{
       return budget;
    }
 
-   public int getSceneNum(){
-      return sceneNum;
+   public String getCardNum(){
+      return cardNum;
    }
 
    public String getDescription(){
