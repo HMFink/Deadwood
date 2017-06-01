@@ -22,7 +22,17 @@ public class Board extends JFrame {
       } else if (e.getSource() == bMove){
         command = "move";
         System.out.println("Move is Selected\n");
+      } else if (e.getSource() == bUpgrade){
+        command = "upgrade";
+        System.out.println("Upgrade is Selected\n");
+      } else if (e.getSource() == bTakeRole){
+        command = "work";
+        System.out.println("Take role is Selected\n");
+      } else if (e.getSource() == bEndTurn){
+        command = "end";
+        System.out.println("End turn is Selected\n");
       }
+      // send command to the main program
     }
 
     public void mousePressed(MouseEvent e) {}
@@ -87,16 +97,28 @@ public class Board extends JFrame {
     bMove.setBounds(icon.getIconWidth()+10,90,150, 20);
     bMove.addMouseListener(new CustomMouseListener());
 
-    bWork = new JButton("Work");
+    bWork = new JButton("WORK");
     bWork.setBackground(Color.white);
     bWork.setBounds(icon.getIconWidth()+10, 120,150, 20);
     bWork.addMouseListener(new CustomMouseListener());
 
+    bUpgrade = new JButton("UPGRADE");
+    bUpgrade.setBackground(Color.white);
+    bUpgrade.setBounds(icon.getIconWidth()+10, 150,150, 20);
+    bUpgrade.addMouseListener(new CustomMouseListener());
+    
+    bEndTurn = new JButton("END TURN");
+    bEndTurn.setBackground(Color.white);
+    bEndTurn.setBounds(icon.getIconWidth()+10, 150,150, 20);
+    bEndTurn.addMouseListener(new CustomMouseListener());
+    
     // Place the action buttons in the top layer
     bPane.add(bAct, new Integer(2));
     bPane.add(bRehearse, new Integer(2));
     bPane.add(bMove, new Integer(2));
     bPane.add(bWork, new Integer(2));
+    bPane.add(bUpgrade, new Integer(2));
+    bPane.add(bEndTurn, new Integer(2));
 
   }
 
