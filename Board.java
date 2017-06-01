@@ -11,7 +11,7 @@ public class Board extends JFrame {
 
   class CustomMouseListener implements MouseListener {
 
-    // Code for the different button clicks
+    // 1 for the different button clicks
     public void mouseClicked(MouseEvent e) {
       if (e.getSource() == bAct){
         command = "act";
@@ -22,17 +22,13 @@ public class Board extends JFrame {
       } else if (e.getSource() == bMove){
         command = "move";
         System.out.println("Move is Selected\n");
-      } else if (e.getSource() == bUpgrade){
-        command = "upgrade";
-        System.out.println("Upgrade is Selected\n");
-      } else if (e.getSource() == bTakeRole){
-        command = "work";
-        System.out.println("Take role is Selected\n");
-      } else if (e.getSource() == bEndTurn){
-        command = "end";
-        System.out.println("End turn is Selected\n");
       }
-      // send command to the main program
+      else if (e.getSource() == bWork){
+        command = "work";
+      }
+      else if (e.getSource() == bEnd){
+        command = "end";
+      }
     }
 
     public void mousePressed(MouseEvent e) {}
@@ -51,6 +47,7 @@ public class Board extends JFrame {
   JButton bRehearse;
   JButton bMove;
   JButton bWork;
+  JButton bEnd;
   // JLayered Pane
   JLayeredPane bPane;
 
@@ -92,36 +89,31 @@ public class Board extends JFrame {
     bRehearse.setBounds(icon.getIconWidth()+10,60,150, 20);
     bRehearse.addMouseListener(new CustomMouseListener());
 
-    bMove = new JButton("MOVE");
+    bMove = new JButton("Move");
     bMove.setBackground(Color.white);
     bMove.setBounds(icon.getIconWidth()+10,90,150, 20);
     bMove.addMouseListener(new CustomMouseListener());
 
-    bWork = new JButton("WORK");
+    bWork = new JButton("Work");
     bWork.setBackground(Color.white);
     bWork.setBounds(icon.getIconWidth()+10, 120,150, 20);
     bWork.addMouseListener(new CustomMouseListener());
 
-    bUpgrade = new JButton("UPGRADE");
-    bUpgrade.setBackground(Color.white);
-    bUpgrade.setBounds(icon.getIconWidth()+10, 150,150, 20);
-    bUpgrade.addMouseListener(new CustomMouseListener());
-    
-    bEndTurn = new JButton("END TURN");
-    bEndTurn.setBackground(Color.white);
-    bEndTurn.setBounds(icon.getIconWidth()+10, 150,150, 20);
-    bEndTurn.addMouseListener(new CustomMouseListener());
-    
+    bEnd = new JButton("End Turn");
+    bEnd.setBackground(Color.white);
+    bEnd.setBounds(icon.getIconWidth()+10, 150,150, 20);
+    bEnd.addMouseListener(new CustomMouseListener());
+
     // Place the action buttons in the top layer
     bPane.add(bAct, new Integer(2));
     bPane.add(bRehearse, new Integer(2));
     bPane.add(bMove, new Integer(2));
     bPane.add(bWork, new Integer(2));
-    bPane.add(bUpgrade, new Integer(2));
-    bPane.add(bEndTurn, new Integer(2));
-
+    bPane.add(bEnd, new Integer(2));
   }
 
+
+  // places a card on the board at the given x and y coordinates
   public void addCard (String cardName, int x, int y) {
     cardlabel = new JLabel();
     String card = cardName + ".png";
@@ -132,7 +124,8 @@ public class Board extends JFrame {
     cardlabel.setOpaque(true);
   }
 
-  public void addPlayer (String color, String level, int x, int y) {
+  // moves a player to the given x and y coordinates
+  public void setPlayer (String color, String level, int x, int y) {
     playerlabel = new JLabel();
     String dieChoice = color + level + ".png";
     ImageIcon pIcon = new ImageIcon(dieChoice);
@@ -140,6 +133,29 @@ public class Board extends JFrame {
     playerlabel.setBounds(x,y,pIcon.getIconWidth(),pIcon.getIconHeight());
     bPane.add(playerlabel,new Integer(3));
   }
+
+  // creates a menu of the adjacent rooms when there are three options
+  public String moveMenu(String room1, String room2, String room3){
+    JPopupMenu menu = new JPopupMenu("Rooms you can move to");
+    menu.add(room1);
+    menu.add(room2);
+    menu.add(room3);
+    menu.show(bMove, bMove.getWidth(), bMove.getHeight());
+    return room1;
+  }
+
+
+  // creates a menu of the adjacent rooms when there are three options
+  public String moveMenu(String room1, String room2, String room3, String room4){
+    JPopupMenu menu = new JPopupMenu("Rooms you can move to");
+    menu.add(room1);
+    menu.add(room2);
+    menu.add(room3);
+    menu.add(room4);
+    menu.show(bMove, bMove.getWidth(), bMove.getHeight());
+    return room1;
+  }
+
 
   public String getCommand(){
     //String temp = command;

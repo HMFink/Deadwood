@@ -16,11 +16,11 @@ public class Deadwood{
 		for (int i = 0; i < numPlaying; i++){
 			String color = control.getPlayers().get(i).getColor();
 			String level = Integer.toString(control.getPlayers().get(i).getLevel());
-			gameBoard.addPlayer(color, level, playerX, playerY);
+			gameBoard.setPlayer(color, level, playerX, playerY);
 			playerY += 60;
 		}
 	}
-/*
+
 	private static void userOptions(){
      		System.out.println("----------------------------------------------------------------------------");
      		System.out.println("Please enter one of the following: ");
@@ -35,7 +35,7 @@ public class Deadwood{
 				System.out.println("'end' = to end your turn");
      		System.out.println("----------------------------------------------------------------------------");
 	}
-*/
+
 
 	public static void main(String[] args) {
 
@@ -89,7 +89,7 @@ public class Deadwood{
   		while (day < 4){
 				// check if all players have taken a turn this round
 				if (currentPlayer > numPlaying){
-					//System.out.println("currentPlayer reset to 1");
+					//System.out.println("currentPlayer reset to 1");gameBoard.clearCommand();
 					currentPlayer = 1;
 				}
 
@@ -101,13 +101,16 @@ public class Deadwood{
 				String command = "";
 
     		valid = false;
-    		//userOptions();
+    		userOptions();
 				System.out.println(control.getPlayers().get(currentPlayer-1).getName() + "'s turn");
 
 				while (!valid){
 
+					gameBoard.clearCommand();
+					command = gameBoard.getCommand();
+
 					while(command.equals("")){
-						//System.out.println();
+						System.out.print("");
 						command = gameBoard.getCommand();
 					}
 /*
@@ -132,29 +135,49 @@ public class Deadwood{
 							System.out.println("You may not rehearse and move in the same turn.");
 							continue;
 						}
+
+
+
 							//retrieves the rooms adjacent to players current position
 						ArrayList<String> adjRooms = new ArrayList<String>(control.getAdjacent(currentPlayer-1));
+/*
 						System.out.println();
 						System.out.println("Rooms you can currently move to:");
+
 						// displays adjacent rooms to player
 						//System.out.println("size of adjRoom ArrayList: " + adjRooms.size());
+
 						for (int i = 0; i < adjRooms.size(); i++){
 							System.out.println("-" + adjRooms.get(i));
 						}
 						// player will be prompted for a valid room to move to until
 						// this is true
-						boolean validRoom = false;
 						//prompt player for room to move to
 						System.out.println("Enter the room you would like to move to: ");
+*/
+						boolean validRoom = false;
+						String room = gameBoard.moveMenu(adjRooms.get(0), adjRooms.get(1), adjRooms.get(2));
+
 
 						while(!validRoom){
 							//String room = "";
-							String room = in.nextLine();
+							//String room = in.nextLine();
 							// check if given room is valid
          			if (control.getPlayers().get(currentPlayer-1).move(room, adjRooms)) {
            				System.out.println("You have moved to " + control.getPlayers().get(currentPlayer-1).getCurrRoom());
 									// change the players current scene to the requested scene
 									control.getPlayers().get(currentPlayer-1).setScene(control.getScene(room));
+
+									int playerX = 0;
+									int playerY= 0;
+									if (control.getPlayers().get(currentPlayer-1).getCurrRoom().equals("trailer")){
+										//enter trailer coordinates
+									}
+									playerX = control.getPlayers().get(currentPlayer-1).getCurrScene().getX();
+									playerY = control.getPlayers().get(currentPlayer-1).getCurrScene().getY();
+									String playerLevel = Integer.toString(control.getPlayers().get(currentPlayer-1).getLevel());
+									String playercolor = control.getPlayers().get(currentPlayer-1).getColor();
+									gameBoard.setPlayer(playercolor, playerLevel, playerX, playerY);
 									validRoom = true;
 									moved = true;
         			}

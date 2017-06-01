@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class Player{
 
-  private String name;
+   String name;
    private int idNumber;
    private int money;
    private int credit;
