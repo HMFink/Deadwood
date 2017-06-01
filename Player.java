@@ -2,6 +2,8 @@
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.awt.*;
+import javax.swing.*;
 
 public class Player{
 
@@ -15,6 +17,7 @@ public class Player{
    private Role role;
    private Scene scene;
    private String color;
+   private JLabel image;
 
    // player contructor
    public Player(int num, String name){
@@ -28,12 +31,20 @@ public class Player{
       currRoom = "trailer";
       role = null;
       scene = null;
+      image = null;
    }
 
 ////////////////////////////////////////////////////////////////////
 // getters & setters
 ////////////////////////////////////////////////////////////////////
 
+  public JLabel getImage(){
+    return image;
+  }
+
+  public void setImage(JLabel image){
+    this.image = image;
+  }
   public void setColor(String color){
     this.color = color;
   }

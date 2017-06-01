@@ -16,7 +16,7 @@ public class Deadwood{
 		for (int i = 0; i < numPlaying; i++){
 			String color = control.getPlayers().get(i).getColor();
 			String level = Integer.toString(control.getPlayers().get(i).getLevel());
-			gameBoard.setPlayer(color, level, playerX, playerY);
+			gameBoard.setPlayer(color, level, playerX, playerY, control.getPlayers().get(i));
 			playerY += 60;
 		}
 	}
@@ -86,23 +86,28 @@ public class Deadwood{
 		boolean worked;
 
 
-  		while (day < 4){
-				// check if all players have taken a turn this round
-				if (currentPlayer > numPlaying){
-					//System.out.println("currentPlayer reset to 1");gameBoard.clearCommand();
-					currentPlayer = 1;
-				}
+		int pos = 0;
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		// start of turn
+		while (day < 4){
+			// check if all players have taken a turn this round
+			if (currentPlayer > numPlaying){
+				//System.out.println("currentPlayer reset to 1");gameBoard.clearCommand();
+				currentPlayer = 1;
+			}
 
-				// set boolean values to false at the beginning of each player's turn
-				moved = false;
-				acted = false;
-				rehearsed = false;
-				worked = false;
-				String command = "";
+			// set boolean values to false at the beginning of each player's turn
+			moved = false;
+			acted = false;
+			rehearsed = false;
+			worked = false;
+			String command = "";
 
-    		valid = false;
-    		userOptions();
-				System.out.println(control.getPlayers().get(currentPlayer-1).getName() + "'s turn");
+  		valid = false;
+  		//userOptions();
+			System.out.println(control.getPlayers().get(currentPlayer-1).getName() + "'s turn");
+
 
 				while (!valid){
 
@@ -170,14 +175,35 @@ public class Deadwood{
 
 									int playerX = 0;
 									int playerY= 0;
-									if (control.getPlayers().get(currentPlayer-1).getCurrRoom().equals("trailer")){
-										//enter trailer coordinates
+									String playerLevel;
+									String playerColor;
+									int positions[] = {0, 50, 100};
+									if (pos > 2){
+										pos = 0;
 									}
-									playerX = control.getPlayers().get(currentPlayer-1).getCurrScene().getX();
-									playerY = control.getPlayers().get(currentPlayer-1).getCurrScene().getY();
-									String playerLevel = Integer.toString(control.getPlayers().get(currentPlayer-1).getLevel());
-									String playercolor = control.getPlayers().get(currentPlayer-1).getColor();
-									gameBoard.setPlayer(playercolor, playerLevel, playerX, playerY);
+
+									if (control.getPlayers().get(currentPlayer-1).getCurrRoom().equals("trailer")){
+										playerX = 991 + positions[pos];
+										playerY = 270;
+										playerLevel = Integer.toString(control.getPlayers().get(currentPlayer-1).getLevel());
+										playerColor = control.getPlayers().get(currentPlayer-1).getColor();
+										gameBoard.setPlayer(playerColor, playerLevel, playerX, playerY, control.getPlayers().get(currentPlayer-1));
+									}
+									else if (control.getPlayers().get(currentPlayer-1).getCurrRoom().equals("office")){
+										playerX = 9 + positions[pos];
+										playerY = 459;
+										playerLevel = Integer.toString(control.getPlayers().get(currentPlayer-1).getLevel());
+										playerColor = control.getPlayers().get(currentPlayer-1).getColor();
+										gameBoard.setPlayer(playerColor, playerLevel, playerX, playerY, control.getPlayers().get(currentPlayer-1));
+									}
+									else{
+										playerX = control.getPlayers().get(currentPlayer-1).getCurrScene().getX() + positions[pos];
+										playerY = control.getPlayers().get(currentPlayer-1).getCurrScene().getY();
+										playerLevel = Integer.toString(control.getPlayers().get(currentPlayer-1).getLevel());
+										playerColor = control.getPlayers().get(currentPlayer-1).getColor();
+										gameBoard.setPlayer(playerColor, playerLevel, playerX, playerY, control.getPlayers().get(currentPlayer-1));
+										pos++;
+									}
 									validRoom = true;
 									moved = true;
         			}

@@ -125,14 +125,19 @@ public class Board extends JFrame {
   }
 
   // moves a player to the given x and y coordinates
-  public void setPlayer (String color, String level, int x, int y) {
+  public void setPlayer (String color, String level, int x, int y, Player player) {
+    if (player.getImage() != null){
+      player.getImage().setIcon(null);
+    }
     playerlabel = new JLabel();
     String dieChoice = color + level + ".png";
     ImageIcon pIcon = new ImageIcon(dieChoice);
     playerlabel.setIcon(pIcon);
     playerlabel.setBounds(x,y,pIcon.getIconWidth(),pIcon.getIconHeight());
     bPane.add(playerlabel,new Integer(3));
+    player.setImage(playerlabel);
   }
+
 
   // creates a menu of the adjacent rooms when there are three options
   public String moveMenu(String room1, String room2, String room3){
@@ -145,7 +150,7 @@ public class Board extends JFrame {
   }
 
 
-  // creates a menu of the adjacent rooms when there are three options
+  // creates a menu of the adjacent rooms when there are four options
   public String moveMenu(String room1, String room2, String room3, String room4){
     JPopupMenu menu = new JPopupMenu("Rooms you can move to");
     menu.add(room1);
