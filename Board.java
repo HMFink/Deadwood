@@ -3,17 +3,24 @@ import javax.swing.*;
 import javax.swing.ImageIcon;
 import javax.imageio.ImageIO;
 import java.awt.event.*;
+import java.io.*;
 
 public class Board extends JFrame {
 
+  static String command = "";
+
   class CustomMouseListener implements MouseListener {
+
     // Code for the different button clicks
     public void mouseClicked(MouseEvent e) {
       if (e.getSource() == bAct){
+        command = "act";
         System.out.println("Acting is Selected\n");
       } else if (e.getSource() == bRehearse){
+        command = "rehearse";
         System.out.println("Rehearse is Selected\n");
       } else if (e.getSource() == bMove){
+        command = "move";
         System.out.println("Move is Selected\n");
       }
     }
@@ -33,6 +40,7 @@ public class Board extends JFrame {
   JButton bAct;
   JButton bRehearse;
   JButton bMove;
+  JButton bWork;
   // JLayered Pane
   JLayeredPane bPane;
 
@@ -68,19 +76,27 @@ public class Board extends JFrame {
     bAct.setBackground(Color.white);
     bAct.setBounds(icon.getIconWidth()+10,30,150, 20);
     bAct.addMouseListener(new CustomMouseListener());
+
     bRehearse = new JButton("REHEARSE");
     bRehearse.setBackground(Color.white);
     bRehearse.setBounds(icon.getIconWidth()+10,60,150, 20);
     bRehearse.addMouseListener(new CustomMouseListener());
+
     bMove = new JButton("MOVE");
     bMove.setBackground(Color.white);
     bMove.setBounds(icon.getIconWidth()+10,90,150, 20);
     bMove.addMouseListener(new CustomMouseListener());
 
+    bWork = new JButton("Work");
+    bWork.setBackground(Color.white);
+    bWork.setBounds(icon.getIconWidth()+10, 120,150, 20);
+    bWork.addMouseListener(new CustomMouseListener());
+
     // Place the action buttons in the top layer
     bPane.add(bAct, new Integer(2));
     bPane.add(bRehearse, new Integer(2));
     bPane.add(bMove, new Integer(2));
+    bPane.add(bWork, new Integer(2));
 
   }
 
@@ -101,6 +117,16 @@ public class Board extends JFrame {
     playerlabel.setIcon(pIcon);
     playerlabel.setBounds(x,y,pIcon.getIconWidth(),pIcon.getIconHeight());
     bPane.add(playerlabel,new Integer(3));
+  }
+
+  public String getCommand(){
+    //String temp = command;
+    //command = "";
+    return command;
+  }
+
+  public void clearCommand(){
+    command = "";
   }
 
 

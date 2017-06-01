@@ -9,6 +9,17 @@ import java.awt.*;
 
 public class Deadwood{
 
+	private static void toTrailer(Controller control, Board gameBoard, int numPlaying){
+		int playerX = 991;
+		int playerY = 270;
+		// place all players in the trailer
+		for (int i = 0; i < numPlaying; i++){
+			String color = control.getPlayers().get(i).getColor();
+			String level = Integer.toString(control.getPlayers().get(i).getLevel());
+			gameBoard.addPlayer(color, level, playerX, playerY);
+			playerY += 60;
+		}
+	}
 
 	private static void userOptions(){
      		System.out.println("----------------------------------------------------------------------------");
@@ -66,22 +77,14 @@ public class Deadwood{
 			gameBoard.addCard(cardNum, x, y);
 		}
 
-		// place all players in the trailer
-		for (int i = 0; i < numPlaying; i++){
-			int x = 991;
-			int y = 270;
-			String color = control.getPlayers().get(i).getColor();
-			String level = Integer.toString(control.getPlayers().get(i).getLevel());
-			gameBoard.addPlayer(color, level, x, y);
-			y += 60;
-			System.out.println("placed a player in the trailer");
-		}
+		toTrailer(control, gameBoard, numPlaying);
 		int day = 1;
 
 		boolean moved;
 		boolean acted;
 		boolean rehearsed;
 		boolean worked;
+
 
   		while (day < 4){
 				// check if all players have taken a turn this round
@@ -95,84 +98,223 @@ public class Deadwood{
 				acted = false;
 				rehearsed = false;
 				worked = false;
+				String command = "";
 
     		valid = false;
     		userOptions();
 				System.out.println(control.getPlayers().get(currentPlayer-1).getName() + "'s turn");
 
 				while (!valid){
-    			String command = in.next();
 
-						// player chooses to move
-      			if (command.equals("move")){
-							// check if player has already move during the current turn
-							if (moved){
-								System.out.println("You may only move once per turn.");
+					while(command.equals("")){
+						//System.out.println();
+						command = gameBoard.getCommand();
+					}
+/*
+					String command = in.next();
+*/
+					System.out.println("command = " + command);
+
+					// player chooses to move
+    			if (command.equals("move")){
+						gameBoard.clearCommand();
+						// check if player has already move during the current turn
+						if (moved){
+							System.out.println("You may only move once per turn.");
+							continue;
+						}
+						// check if player has acted during current turn
+						if (acted){
+							System.out.println("You may not act and move in the same turn.");
+							continue;
+						}
+						if (rehearsed){
+							System.out.println("You may not rehearse and move in the same turn.");
+							continue;
+						}
+							//retrieves the rooms adjacent to players current position
+						ArrayList<String> adjRooms = new ArrayList<String>(control.getAdjacent(currentPlayer-1));
+						System.out.println();
+						System.out.println("Rooms you can currently move to:");
+						// displays adjacent rooms to player
+						//System.out.println("size of adjRoom ArrayList: " + adjRooms.size());
+						for (int i = 0; i < adjRooms.size(); i++){
+							System.out.println("-" + adjRooms.get(i));
+						}
+						// player will be prompted for a valid room to move to until
+						// this is true
+						boolean validRoom = false;
+						//prompt player for room to move to
+						System.out.println("Enter the room you would like to move to: ");
+
+						while(!validRoom){
+							//String room = "";
+							String room = in.nextLine();
+							// check if given room is valid
+         			if (control.getPlayers().get(currentPlayer-1).move(room, adjRooms)) {
+           				System.out.println("You have moved to " + control.getPlayers().get(currentPlayer-1).getCurrRoom());
+									// change the players current scene to the requested scene
+									control.getPlayers().get(currentPlayer-1).setScene(control.getScene(room));
+									validRoom = true;
+									moved = true;
+        			}
+							/*
+							else {
+									System.out.println("Invalid room! Please enter one of the rooms listed above");
+							}
+							*/
+						}
+						adjRooms.clear();
+    			}
+
+					// player chooses to take a role
+					else if (command.equals("work")){
+						//check if the player is in the trailer or the casting office
+						if (control.getPlayers().get(currentPlayer-1).getCurrRoom().equals("trailer") ||
+								control.getPlayers().get(currentPlayer-1).getCurrRoom().equals("office")){
+									System.out.println("There are no roles to work in this room.");
+									continue;
+								}
+						// check if player is already working a role
+						if (control.getPlayers().get(currentPlayer-1).getRole() != null){
+							System.out.println("You must finish working your current role before you can take another.");
+							continue;
+						}
+
+						if (control.getPlayers().get(currentPlayer-1).getCurrScene().getWrap()){
+							System.out.println("This scene has already done being shot.");
+						}
+						System.out.println();
+						// display available roles in current scene
+						System.out.println("Available roles off the card:");
+						Scene currScene = control.getPlayers().get(currentPlayer-1).getCurrScene();
+						ArrayList<Role> offRoles = currScene.getOffCardRoles();
+						for (int i = 0; i < offRoles.size(); i++){
+							if (offRoles.get(i).getPlayerNum() == -1){
+								System.out.println("-" + offRoles.get(i).getName() + ", role level: " + offRoles.get(i).getLevel());
+							}
+						}
+						System.out.println();
+						System.out.println("Available roles on the card:");
+						Card currCard = control.getPlayers().get(currentPlayer-1).getCurrScene().getCard();
+						for (int i = 0; i < currCard.getRoles().size(); i++){
+							if (currCard.getRoles().get(i).getPlayerNum() == -1){
+								System.out.println("-" + currCard.getRoles().get(i).getName() + ", role level: " + currCard.getRoles().get(i).getLevel());
+							}
+						}
+						System.out.println();
+						// prompt player for the desired role to work
+						System.out.println("Enter the role you would like to take: ");
+						String role = in.next();
+
+						if (in.hasNext()) {
+							role += in.nextLine();
+						}
+						// check if the entered role is valid and the player is high enough level
+       			if (control.canWork(role, currentPlayer-1)){
+         				System.out.println("You are now working this role!");
+								worked = true;
+      			}
+
+						else {
+							System.out.println("Invalid Role.");
+							continue;
+						}
+
+						// player chooses to act
+    			} else if (command.equals("act")){
+							// check if player is currently working a role
+							if (control.getPlayers().get(currentPlayer-1).getRole() == null){
+								System.out.println("You are not currently working a role.");
 								continue;
 							}
-							// check if player has acted during current turn
+							// check if player has moved during the current turn
+							if (moved){
+								System.out.println("You may not move and act in the same turn.");
+								continue;
+							}
+							// check if the player has already acted during current Turn
 							if (acted){
-								System.out.println("You may not act and move in the same turn.");
+								System.out.println("You may only act once per turn.");
 								continue;
 							}
 							if (rehearsed){
-								System.out.println("You may not rehearse and move in the same turn.");
+								System.out.println("You may not rehearse and act in the same turn.");
 								continue;
 							}
- 							//retrieves the rooms adjacent to players current position
-							ArrayList<String> adjRooms = new ArrayList<String>(control.getAdjacent(currentPlayer-1));
+							// act
+							if (control.getPlayers().get(currentPlayer-1).act() == 1){
+								System.out.println("That's a wrap! The scene is over.");
+								control.payout(currentPlayer-1);
+								control.decrementScene();
+							}
+							acted = true;
+							continue;
+
+							// player chooses to rehearse
+    			} else if (command.equals("rehearse")){
+							if (rehearsed){
+								System.out.println("You may only rehearse once per turn");
+								continue;
+							}
+							if (acted){
+								System.out.println("You may not act and rehearse in the same turn.");
+								continue;
+							}
+							if (worked){
+								System.out.println("You must wait until your next turn to rehearse.");
+								continue;
+							}
+
+							if (control.getPlayers().get(currentPlayer-1).rehearse()){
+								rehearsed = true;
+							}
+
+						// player chooseses to upgrade
+    			} else if (command.equals("upgrade")){
+							if (!control.getPlayers().get(currentPlayer-1).getCurrRoom().equals("office")){
+								System.out.println("You must be in the casting office to upgrade your level");
+								continue;
+							}
+
+							control.displayLevels();
 							System.out.println();
-							System.out.println("Rooms you can currently move to:");
-							// displays adjacent rooms to player
-							//System.out.println("size of adjRoom ArrayList: " + adjRooms.size());
-							for (int i = 0; i < adjRooms.size(); i++){
-								System.out.println("-" + adjRooms.get(i));
-							}
-							// player will be prompted for a valid room to move to until
-							// this is true
-							boolean validRoom = false;
-							//prompt player for room to move to
-							System.out.println("Enter the room you would like to move to: ");
+							System.out.println("Your money: " + control.getPlayers().get(currentPlayer-1).getMoney());
+							System.out.println("Your credits: " + control.getPlayers().get(currentPlayer-1).getCredit());
+							System.out.println("Which level would you like to upgrade to?");
+							int upLevel = in.nextInt();
+							System.out.println("Would you like to pay with money or credit?");
+							String payment = in.next();
 
-							while(!validRoom){
-								//String room = "";
-								String room = in.nextLine();
-								// check if given room is valid
-           			if (control.getPlayers().get(currentPlayer-1).move(room, adjRooms)) {
-             				System.out.println("You have moved to " + control.getPlayers().get(currentPlayer-1).getCurrRoom());
-										// change the players current scene to the requested scene
-										control.getPlayers().get(currentPlayer-1).setScene(control.getScene(room));
-										validRoom = true;
-										moved = true;
-          			}
-								/*
-								else {
-										System.out.println("Invalid room! Please enter one of the rooms listed above");
-								}
-								*/
-							}
-							adjRooms.clear();
-      			}
+							control.getPlayers().get(currentPlayer-1).upgrade(upLevel, payment);
 
-						// player chooses to take a role
-						else if (command.equals("work")){
-							//check if the player is in the trailer or the casting office
+    			} else if (command.equals("who")){
+							System.out.println();
+      				System.out.println("Player " + currentPlayer + ": " + control.getPlayers().get(currentPlayer-1).getName());
+							System.out.println("Money: " + control.getPlayers().get(currentPlayer-1).getMoney());
+							System.out.println("Credits: " + control.getPlayers().get(currentPlayer-1).getCredit());
+							System.out.println("Level: " + control.getPlayers().get(currentPlayer-1).getLevel());
+							System.out.println("Current Room: " + control.getPlayers().get(currentPlayer-1).getCurrRoom());
+							Role tempRole = control.getPlayers().get(currentPlayer-1).getRole();
+							if (tempRole != null){
+								System.out.println("Current Role: " + control.getPlayers().get(currentPlayer-1).getRole().getName());
+								System.out.println("Rehearsal counters: " + control.getPlayers().get(currentPlayer-1).getRehearsals());
+							}
+							else{
+								System.out.println("Current role: none");
+							}
+
+    			} else if (command.equals("where")){
+							System.out.println();
+      				System.out.println("Current Room: " + control.getPlayers().get(currentPlayer-1).getCurrRoom());
+							String sceneName = control.getPlayers().get(currentPlayer-1).getCurrRoom();
 							if (control.getPlayers().get(currentPlayer-1).getCurrRoom().equals("trailer") ||
 									control.getPlayers().get(currentPlayer-1).getCurrRoom().equals("office")){
-										System.out.println("There are no roles to work in this room.");
 										continue;
 									}
-							// check if player is already working a role
-							if (control.getPlayers().get(currentPlayer-1).getRole() != null){
-								System.out.println("You must finish working your current role before you can take another.");
-								continue;
-							}
-
-							if (control.getPlayers().get(currentPlayer-1).getCurrScene().getWrap()){
-								System.out.println("This scene has already done being shot.");
-							}
 							System.out.println();
-							// display available roles in current scene
+							System.out.println("Shooting: " + control.getCard(sceneName));
+							System.out.println();
 							System.out.println("Available roles off the card:");
 							Scene currScene = control.getPlayers().get(currentPlayer-1).getCurrScene();
 							ArrayList<Role> offRoles = currScene.getOffCardRoles();
@@ -190,143 +332,14 @@ public class Deadwood{
 								}
 							}
 							System.out.println();
-							// prompt player for the desired role to work
-							System.out.println("Enter the role you would like to take: ");
-							String role = in.next();
+							System.out.println("Shot counters on scene: " + currScene.getShotCount());
 
-							if (in.hasNext()) {
-								role += in.nextLine();
-							}
-							// check if the entered role is valid and the player is high enough level
-         			if (control.canWork(role, currentPlayer-1)){
-           				System.out.println("You are now working this role!");
-									worked = true;
-        			}
-
-							else {
-								System.out.println("Invalid Role.");
-								continue;
-							}
-
-							// player chooses to act
-      			} else if (command.equals("act")){
-								// check if player is currently working a role
-								if (control.getPlayers().get(currentPlayer-1).getRole() == null){
-									System.out.println("You are not currently working a role.");
-									continue;
-								}
-								// check if player has moved during the current turn
-								if (moved){
-									System.out.println("You may not move and act in the same turn.");
-									continue;
-								}
-								// check if the player has already acted during current Turn
-								if (acted){
-									System.out.println("You may only act once per turn.");
-									continue;
-								}
-								if (rehearsed){
-									System.out.println("You may not rehearse and act in the same turn.");
-									continue;
-								}
-								// act
-								if (control.getPlayers().get(currentPlayer-1).act() == 1){
-									System.out.println("That's a wrap! The scene is over.");
-									control.payout(currentPlayer-1);
-									control.decrementScene();
-								}
-								acted = true;
-								continue;
-
-								// player chooses to rehearse
-      			} else if (command.equals("rehearse")){
-								if (rehearsed){
-									System.out.println("You may only rehearse once per turn");
-									continue;
-								}
-								if (acted){
-									System.out.println("You may not act and rehearse in the same turn.");
-									continue;
-								}
-								if (worked){
-									System.out.println("You must wait until your next turn to rehearse.");
-									continue;
-								}
-
-								if (control.getPlayers().get(currentPlayer-1).rehearse()){
-									rehearsed = true;
-								}
-
-							// player chooseses to upgrade
-      			} else if (command.equals("upgrade")){
-								if (!control.getPlayers().get(currentPlayer-1).getCurrRoom().equals("office")){
-									System.out.println("You must be in the casting office to upgrade your level");
-									continue;
-								}
-
-								control.displayLevels();
-								System.out.println();
-								System.out.println("Your money: " + control.getPlayers().get(currentPlayer-1).getMoney());
-								System.out.println("Your credits: " + control.getPlayers().get(currentPlayer-1).getCredit());
-								System.out.println("Which level would you like to upgrade to?");
-								int upLevel = in.nextInt();
-								System.out.println("Would you like to pay with money or credit?");
-								String payment = in.next();
-
-								control.getPlayers().get(currentPlayer-1).upgrade(upLevel, payment);
-
-      			} else if (command.equals("who")){
-								System.out.println();
-        				System.out.println("Player " + currentPlayer + ": " + control.getPlayers().get(currentPlayer-1).getName());
-								System.out.println("Money: " + control.getPlayers().get(currentPlayer-1).getMoney());
-								System.out.println("Credits: " + control.getPlayers().get(currentPlayer-1).getCredit());
-								System.out.println("Level: " + control.getPlayers().get(currentPlayer-1).getLevel());
-								System.out.println("Current Room: " + control.getPlayers().get(currentPlayer-1).getCurrRoom());
-								Role tempRole = control.getPlayers().get(currentPlayer-1).getRole();
-								if (tempRole != null){
-									System.out.println("Current Role: " + control.getPlayers().get(currentPlayer-1).getRole().getName());
-									System.out.println("Rehearsal counters: " + control.getPlayers().get(currentPlayer-1).getRehearsals());
-								}
-								else{
-									System.out.println("Current role: none");
-								}
-
-      			} else if (command.equals("where")){
-								System.out.println();
-        				System.out.println("Current Room: " + control.getPlayers().get(currentPlayer-1).getCurrRoom());
-								String sceneName = control.getPlayers().get(currentPlayer-1).getCurrRoom();
-								if (control.getPlayers().get(currentPlayer-1).getCurrRoom().equals("trailer") ||
-										control.getPlayers().get(currentPlayer-1).getCurrRoom().equals("office")){
-											continue;
-										}
-								System.out.println();
-								System.out.println("Shooting: " + control.getCard(sceneName));
-								System.out.println();
-								System.out.println("Available roles off the card:");
-								Scene currScene = control.getPlayers().get(currentPlayer-1).getCurrScene();
-								ArrayList<Role> offRoles = currScene.getOffCardRoles();
-								for (int i = 0; i < offRoles.size(); i++){
-									if (offRoles.get(i).getPlayerNum() == -1){
-										System.out.println("-" + offRoles.get(i).getName() + ", role level: " + offRoles.get(i).getLevel());
-									}
-								}
-								System.out.println();
-								System.out.println("Available roles on the card:");
-								Card currCard = control.getPlayers().get(currentPlayer-1).getCurrScene().getCard();
-								for (int i = 0; i < currCard.getRoles().size(); i++){
-									if (currCard.getRoles().get(i).getPlayerNum() == -1){
-										System.out.println("-" + currCard.getRoles().get(i).getName() + ", role level: " + currCard.getRoles().get(i).getLevel());
-									}
-								}
-								System.out.println();
-								System.out.println("Shot counters on scene: " + currScene.getShotCount());
-
-      			} else if (command.equals("end")){
-        				System.out.println("Turn ended");
-								valid = true;
-								currentPlayer++;
-      			}
-    		}
+    			} else if (command.equals("end")){
+      				System.out.println("Turn ended");
+							valid = true;
+							currentPlayer++;
+    			}
   		}
+		}
 	}// end main
 }// end class
