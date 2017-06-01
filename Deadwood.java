@@ -20,7 +20,7 @@ public class Deadwood{
 			playerY += 60;
 		}
 	}
-
+/*
 	private static void userOptions(){
      		System.out.println("----------------------------------------------------------------------------");
      		System.out.println("Please enter one of the following: ");
@@ -35,7 +35,7 @@ public class Deadwood{
 				System.out.println("'end' = to end your turn");
      		System.out.println("----------------------------------------------------------------------------");
 	}
-
+*/
 
 	public static void main(String[] args) {
 
@@ -101,7 +101,7 @@ public class Deadwood{
 				String command = "";
 
     		valid = false;
-    		userOptions();
+    		//userOptions();
 				System.out.println(control.getPlayers().get(currentPlayer-1).getName() + "'s turn");
 
 				while (!valid){
