@@ -4,8 +4,9 @@
 
 
 import java.util.*;
-import javax.swing.JFrame;
+import javax.swing.*;
 import java.awt.*;
+
 
 public class Deadwood{
 
@@ -35,8 +36,23 @@ public class Deadwood{
     System.out.println("****************************************************************************");
 */
 		System.out.print("Please enter the number of players (2-3): ");
-		numPlaying = in.nextInt();
+		//numPlaying = in.nextInt();
 		System.out.println();
+
+		JFrame frame = new JFrame("FrameDemo");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Object[] options = {"2 Players", "3 Players"};
+		int n = JOptionPane.showOptionDialog(frame, "Will there be 2 or 3 players?",
+						 "Select the number of players", JOptionPane.YES_NO_OPTION,
+						 JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+						 frame.pack();
+						 frame.setVisible(true);
+		 int value = ((Integer)JOptionPane.getInputValue()).intValue();
+		 if (value == JOptionPane.YES_OPTION) {
+				 numPlaying = 2;
+		 } else if (value == JOptionPane.NO_OPTION) {
+				 numPlaying = 3;
+		 }
 
 		// Call controller
 		Controller control = new Controller(numPlaying);
