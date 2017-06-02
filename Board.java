@@ -84,12 +84,20 @@ public class Board extends JFrame {
   JLabel cardlabel;
   JLabel playerlabel;
   JLabel mLabel;
+  static JLabel currPlayerLabel;
+  static JLabel levelLabel;
+  static JLabel moneyLabel;
+  static JLabel creditLabel;
+  static JLabel rehearsalLabel;
+
   // JButtons
   JButton bAct;
   JButton bRehearse;
   JButton bMove;
   JButton bWork;
   JButton bEnd;
+  JButton bUpgrade;
+
   // JLayered Pane
   JLayeredPane bPane;
 
@@ -133,34 +141,40 @@ public class Board extends JFrame {
 
     // Create the Menu for action buttons
     mLabel = new JLabel("MENU");
-    mLabel.setBounds(icon.getIconWidth()+40,0,150,20);
+    mLabel.setBounds(icon.getIconWidth()+60,0,150,20);
     bPane.add(mLabel,new Integer(2));
 
     // Create Action buttons
     bAct = new JButton("ACT");
-    bAct.setBackground(Color.white);
+    bAct.setBackground(Color.green);
     bAct.setBounds(icon.getIconWidth()+10,30,150, 20);
     bAct.addMouseListener(new CustomMouseListener());
 
     bRehearse = new JButton("REHEARSE");
-    bRehearse.setBackground(Color.white);
-    bRehearse.setBounds(icon.getIconWidth()+10,60,150, 20);
+    bRehearse.setBackground(Color.green);
+    bRehearse.setBounds(icon.getIconWidth()+10,70,150, 20);
     bRehearse.addMouseListener(new CustomMouseListener());
 
     bMove = new JButton("Move");
-    bMove.setBackground(Color.white);
-    bMove.setBounds(icon.getIconWidth()+10,90,150, 20);
+    bMove.setBackground(Color.green);
+    bMove.setBounds(icon.getIconWidth()+10,110,150, 20);
     bMove.addMouseListener(new CustomMouseListener());
 
     bWork = new JButton("Work");
-    bWork.setBackground(Color.white);
-    bWork.setBounds(icon.getIconWidth()+10, 120,150, 20);
+    bWork.setBackground(Color.green);
+    bWork.setBounds(icon.getIconWidth()+10, 150,150, 20);
     bWork.addMouseListener(new CustomMouseListener());
 
+    bUpgrade = new JButton("Upgrade level");
+    bUpgrade.setBackground(Color.green);
+    bUpgrade.setBounds(icon.getIconWidth()+10, 190, 150, 20);
+    bUpgrade.addMouseListener(new CustomMouseListener());
+
     bEnd = new JButton("End Turn");
-    bEnd.setBackground(Color.white);
-    bEnd.setBounds(icon.getIconWidth()+10, 150,150, 20);
+    bEnd.setBackground(Color.green);
+    bEnd.setBounds(icon.getIconWidth()+10, 230, 150, 20);
     bEnd.addMouseListener(new CustomMouseListener());
+
 
     // Place the action buttons in the top layer
     bPane.add(bAct, new Integer(2));
@@ -168,6 +182,10 @@ public class Board extends JFrame {
     bPane.add(bMove, new Integer(2));
     bPane.add(bWork, new Integer(2));
     bPane.add(bEnd, new Integer(2));
+    bPane.add(bUpgrade, new Integer(2));
+
+    //display for current player stats
+
   }
 
 
@@ -194,6 +212,59 @@ public class Board extends JFrame {
     playerlabel.setBounds(x,y,pIcon.getIconWidth(),pIcon.getIconHeight());
     bPane.add(playerlabel,new Integer(3));
     player.setImage(playerlabel);
+  }
+
+  // display and update player stats on sidebar
+  public void displayStats(Player player){
+
+    currPlayerLabel = new JLabel("Player: " + player.getName());
+    currPlayerLabel.setBounds(1208, 230, 150, 150);
+    bPane.add(currPlayerLabel, new Integer(2));
+
+    levelLabel = new JLabel("Level: " + player.getLevel());
+    levelLabel.setBounds(1208, 265, 150, 150);
+    bPane.add(levelLabel, new Integer(2));
+
+    moneyLabel = new JLabel("Money: " + player.getMoney());
+    moneyLabel.setBounds(1208, 305, 150, 150);
+    bPane.add(moneyLabel, new Integer(2));
+
+    creditLabel = new JLabel("Credit: " + player.getCredit());
+    creditLabel.setBounds(1208, 345, 150, 150);
+    bPane.add(creditLabel, new Integer(2));
+
+    rehearsalLabel = new JLabel("Rehearsals: " + player.getRehearsals());
+    rehearsalLabel.setBounds(1208, 385, 150, 150);
+    bPane.add(rehearsalLabel, new Integer(2));
+  }
+
+
+  public void updateStats(Player player){
+
+    bPane.remove(currPlayerLabel);
+    currPlayerLabel = new JLabel("Player: " + player.getName());
+    currPlayerLabel.setBounds(1208, 230, 150, 150);
+    bPane.add(currPlayerLabel, new Integer(2));
+
+    bPane.remove(levelLabel);
+    levelLabel = new JLabel("Level: " + player.getLevel());
+    levelLabel.setBounds(1208, 265, 150, 150);
+    bPane.add(levelLabel, new Integer(2));
+
+    bPane.remove(moneyLabel);
+    moneyLabel = new JLabel("Money: " + player.getMoney());
+    moneyLabel.setBounds(1208, 305, 150, 150);
+    bPane.add(moneyLabel, new Integer(2));
+
+    bPane.remove(creditLabel);
+    creditLabel = new JLabel("Credit: " + player.getCredit());
+    creditLabel.setBounds(1208, 345, 150, 150);
+    bPane.add(creditLabel, new Integer(2));
+
+    bPane.remove(rehearsalLabel);
+    rehearsalLabel = new JLabel("Rehearsals: " + player.getRehearsals());
+    rehearsalLabel.setBounds(1208, 385, 150, 150);
+    bPane.add(rehearsalLabel, new Integer(2));
   }
 
 

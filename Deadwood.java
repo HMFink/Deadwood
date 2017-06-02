@@ -44,6 +44,7 @@ public class Deadwood{
 		// create and display board
 		Board gameBoard = new Board();
 		gameBoard.setVisible(true);
+		gameBoard.displayStats(control.getPlayers().get(currentPlayer-1));
 
 		// used to determine if the user input was valid or not
 		boolean valid;
@@ -80,6 +81,8 @@ public class Deadwood{
 				//System.out.println("currentPlayer reset to 1");gameBoard.clearCommand();
 				currentPlayer = 1;
 			}
+
+			gameBoard.updateStats(control.getPlayers().get(currentPlayer-1));
 
 			// set boolean values to false at the beginning of each player's turn
 			moved = false;
@@ -326,9 +329,11 @@ public class Deadwood{
 							if (control.getPlayers().get(currentPlayer-1).act() == 1){
 								System.out.println("That's a wrap! The scene is over.");
 								control.payout(currentPlayer-1);
+								gameBoard.updateStats(control.getPlayers().get(currentPlayer-1));
 								control.decrementScene();
 							}
 							acted = true;
+							gameBoard.updateStats(control.getPlayers().get(currentPlayer-1));
 							continue;
 
 							// player chooses to rehearse
@@ -347,6 +352,7 @@ public class Deadwood{
 							}
 
 							if (control.getPlayers().get(currentPlayer-1).rehearse()){
+								gameBoard.updateStats(control.getPlayers().get(currentPlayer-1));
 								rehearsed = true;
 							}
 
@@ -367,6 +373,7 @@ public class Deadwood{
 							String payment = in.next();
 
 							control.getPlayers().get(currentPlayer-1).upgrade(upLevel, payment);
+							gameBoard.updateStats(control.getPlayers().get(currentPlayer-1));
 
     			} else if (command.equals("who")){
 							System.out.println();
