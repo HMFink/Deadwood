@@ -4,6 +4,7 @@ import javax.swing.ImageIcon;
 import javax.imageio.ImageIO;
 import java.awt.event.*;
 import java.io.*;
+import java.util.*;
 
 public class Board extends JFrame {
 
@@ -13,15 +14,13 @@ public class Board extends JFrame {
 
     // 1 for the different button clicks
     public void mouseClicked(MouseEvent e) {
+      // cases for player actions
       if (e.getSource() == bAct){
         command = "act";
-        System.out.println("Acting is Selected\n");
       } else if (e.getSource() == bRehearse){
         command = "rehearse";
-        System.out.println("Rehearse is Selected\n");
       } else if (e.getSource() == bMove){
         command = "move";
-        System.out.println("Move is Selected\n");
       }
       else if (e.getSource() == bWork){
         command = "work";
@@ -31,10 +30,53 @@ public class Board extends JFrame {
       }
     }
 
+
+
     public void mousePressed(MouseEvent e) {}
     public void mouseReleased(MouseEvent e) {}
     public void mouseEntered(MouseEvent e) {}
     public void mouseExited(MouseEvent e) {}
+  }
+
+
+  class MoveListener implements ActionListener{
+
+    public void actionPerformed(ActionEvent e){
+      // cases for room selection
+      if (e.getSource() == room0){
+        command = "0";
+      }
+      else if (e.getSource() == room1){
+        command = "1";
+      }
+      else if (e.getSource() == room2){
+        command = "2";
+      }
+      else if (e.getSource() == room3){
+        command = "3";
+      }
+      else if (e.getSource() == role0){
+        command = "0";
+      }
+      else if (e.getSource() == role1){
+        command = "1";
+      }
+      else if (e.getSource() == role2){
+        command = "2";
+      }
+      else if (e.getSource() == role3){
+        command = "3";
+      }
+      else if (e.getSource() == role4){
+        command = "4";
+      }
+      else if (e.getSource() == role5){
+        command = "5";
+      }
+      else if (e.getSource() == role6){
+        command = "6";
+      }
+    }
   }
 
   // Private Attributes
@@ -50,6 +92,22 @@ public class Board extends JFrame {
   JButton bEnd;
   // JLayered Pane
   JLayeredPane bPane;
+
+  // JmenuItems for adjacent rooms when moving
+  static JMenuItem room0;
+  static JMenuItem room1;
+  static JMenuItem room2;
+  static JMenuItem room3;
+
+  // JMenuItems for available roles
+  static JMenuItem role0;
+  static JMenuItem role1;
+  static JMenuItem role2;
+  static JMenuItem role3;
+  static JMenuItem role4;
+  static JMenuItem role5;
+  static JMenuItem role6;
+
 
   public Board() {
     // set the title of the JFrame
@@ -140,26 +198,175 @@ public class Board extends JFrame {
 
 
   // creates a menu of the adjacent rooms when there are three options
-  public String moveMenu(String room1, String room2, String room3){
+  public void moveMenu(String r1, String r2, String r3){
+
     JPopupMenu menu = new JPopupMenu("Rooms you can move to");
+
+    room0 = new JMenuItem(r1);
+    room1 = new JMenuItem(r2);
+    room2 = new JMenuItem(r3);
+    menu.add(room0);
     menu.add(room1);
     menu.add(room2);
-    menu.add(room3);
+    room0.addActionListener(new MoveListener());
+    room1.addActionListener(new MoveListener());
+    room2.addActionListener(new MoveListener());
     menu.show(bMove, bMove.getWidth(), bMove.getHeight());
-    return room1;
   }
 
 
   // creates a menu of the adjacent rooms when there are four options
-  public String moveMenu(String room1, String room2, String room3, String room4){
+  public void moveMenu(String r1, String r2, String r3, String r4){
+
     JPopupMenu menu = new JPopupMenu("Rooms you can move to");
+
+    room0 = new JMenuItem(r1);
+    room1 = new JMenuItem(r2);
+    room2 = new JMenuItem(r3);
+    room3 = new JMenuItem(r4);
+    menu.add(room0);
     menu.add(room1);
     menu.add(room2);
     menu.add(room3);
-    menu.add(room4);
+    room0.addActionListener(new MoveListener());
+    room1.addActionListener(new MoveListener());
+    room2.addActionListener(new MoveListener());
     menu.show(bMove, bMove.getWidth(), bMove.getHeight());
-    return room1;
   }
+
+  // creates a menu of available roles for 1 option
+  public void workMenu(String r1){
+
+    JPopupMenu menu = new JPopupMenu("Available roles");
+    role0 = new JMenuItem(r1);
+    menu.add(role0);
+    role0.addActionListener(new MoveListener());
+    menu.show(bWork, bWork.getWidth(), bWork.getHeight());
+  }
+
+  // creates a menu of available roles for 2 options
+  public void workMenu(String r1, String r2){
+
+    JPopupMenu menu = new JPopupMenu("Available roles");
+    role0 = new JMenuItem(r1);
+    role1 = new JMenuItem(r2);
+    menu.add(role0);
+    menu.add(role1);
+    role0.addActionListener(new MoveListener());
+    role1.addActionListener(new MoveListener());
+    menu.show(bWork, bWork.getWidth(), bWork.getHeight());
+  }
+
+  // creates a menu of available roles for 3 options
+  public void workMenu(String r1, String r2, String r3){
+
+    JPopupMenu menu = new JPopupMenu("Available roles");
+    role0 = new JMenuItem(r1);
+    role1 = new JMenuItem(r2);
+    role2 = new JMenuItem(r3);
+    menu.add(role0);
+    menu.add(role1);
+    menu.add(role2);
+    role0.addActionListener(new MoveListener());
+    role1.addActionListener(new MoveListener());
+    role2.addActionListener(new MoveListener());
+    menu.show(bWork, bWork.getWidth(), bWork.getHeight());
+  }
+
+  // creates a menu of available roles for 4 options
+  public void workMenu(String r1, String r2, String r3, String r4){
+
+    JPopupMenu menu = new JPopupMenu("Available roles");
+    role0 = new JMenuItem(r1);
+    role1 = new JMenuItem(r2);
+    role2 = new JMenuItem(r3);
+    role3 = new JMenuItem(r4);
+    menu.add(role0);
+    menu.add(role1);
+    menu.add(role2);
+    menu.add(role3);
+    role0.addActionListener(new MoveListener());
+    role1.addActionListener(new MoveListener());
+    role2.addActionListener(new MoveListener());
+    role3.addActionListener(new MoveListener());
+    menu.show(bWork, bWork.getWidth(), bWork.getHeight());
+  }
+
+  // creates a menu of available roles for 5 options
+  public void workMenu(String r1, String r2, String r3, String r4, String r5){
+
+    JPopupMenu menu = new JPopupMenu("Available roles");
+    role0 = new JMenuItem(r1);
+    role1 = new JMenuItem(r2);
+    role2 = new JMenuItem(r3);
+    role3 = new JMenuItem(r4);
+    role4 = new JMenuItem(r5);
+    menu.add(role0);
+    menu.add(role1);
+    menu.add(role2);
+    menu.add(role3);
+    menu.add(role4);
+    role0.addActionListener(new MoveListener());
+    role1.addActionListener(new MoveListener());
+    role2.addActionListener(new MoveListener());
+    role3.addActionListener(new MoveListener());
+    role4.addActionListener(new MoveListener());
+    menu.show(bWork, bWork.getWidth(), bWork.getHeight());
+  }
+
+  // creates a menu of available roles for 6 options
+  public void workMenu(String r1, String r2, String r3, String r4, String r5, String r6){
+
+    JPopupMenu menu = new JPopupMenu("Available roles");
+    role0 = new JMenuItem(r1);
+    role1 = new JMenuItem(r2);
+    role2 = new JMenuItem(r3);
+    role3 = new JMenuItem(r4);
+    role4 = new JMenuItem(r5);
+    role5 = new JMenuItem(r6);
+    menu.add(role0);
+    menu.add(role1);
+    menu.add(role2);
+    menu.add(role3);
+    menu.add(role4);
+    menu.add(role5);
+    role0.addActionListener(new MoveListener());
+    role1.addActionListener(new MoveListener());
+    role2.addActionListener(new MoveListener());
+    role3.addActionListener(new MoveListener());
+    role4.addActionListener(new MoveListener());
+    role5.addActionListener(new MoveListener());
+    menu.show(bWork, bWork.getWidth(), bWork.getHeight());
+  }
+
+  // creates a menu of available roles for 7 options
+  public void workMenu(String r1, String r2, String r3, String r4, String r5, String r6, String r7){
+
+    JPopupMenu menu = new JPopupMenu("Available roles");
+    role0 = new JMenuItem(r1);
+    role1 = new JMenuItem(r2);
+    role2 = new JMenuItem(r3);
+    role3 = new JMenuItem(r4);
+    role4 = new JMenuItem(r5);
+    role5 = new JMenuItem(r6);
+    role6 = new JMenuItem(r7);
+    menu.add(role0);
+    menu.add(role1);
+    menu.add(role2);
+    menu.add(role3);
+    menu.add(role4);
+    menu.add(role5);
+    menu.add(role6);
+    role0.addActionListener(new MoveListener());
+    role1.addActionListener(new MoveListener());
+    role2.addActionListener(new MoveListener());
+    role3.addActionListener(new MoveListener());
+    role4.addActionListener(new MoveListener());
+    role5.addActionListener(new MoveListener());
+    role6.addActionListener(new MoveListener());
+    menu.show(bWork, bWork.getWidth(), bWork.getHeight());
+  }
+
 
 
   public String getCommand(){

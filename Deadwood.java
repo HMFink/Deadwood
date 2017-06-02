@@ -21,22 +21,6 @@ public class Deadwood{
 		}
 	}
 
-	private static void userOptions(){
-     		System.out.println("----------------------------------------------------------------------------");
-     		System.out.println("Please enter one of the following: ");
-     		System.out.println();
-				System.out.println("'who' = to see the current players information and any role they are working");
-				System.out.println("'where' = to see your current room and any active scenes");
-     		System.out.println("'move' = move to a room adjacent to your current position");
-     		System.out.println("'work' = to take a role in your current room");
-				System.out.println("'rehearse' = to rehearse your current role");
-     		System.out.println("'act' = act out the role you are currently in");
-     		System.out.println("'upgrade' = upgrade your current level in exchange for money or credit");
-				System.out.println("'end' = to end your turn");
-     		System.out.println("----------------------------------------------------------------------------");
-	}
-
-
 	public static void main(String[] args) {
 
 		// Variables
@@ -118,14 +102,11 @@ public class Deadwood{
 						System.out.print("");
 						command = gameBoard.getCommand();
 					}
-/*
-					String command = in.next();
-*/
-					System.out.println("command = " + command);
 
 					// player chooses to move
     			if (command.equals("move")){
 						gameBoard.clearCommand();
+						command = gameBoard.getCommand();
 						// check if player has already move during the current turn
 						if (moved){
 							System.out.println("You may only move once per turn.");
@@ -140,33 +121,34 @@ public class Deadwood{
 							System.out.println("You may not rehearse and move in the same turn.");
 							continue;
 						}
-
-
+						if (control.getPlayers().get(currentPlayer-1).getRole() != null){
+							System.out.println("You cannot move until your current scene finishes.");
+							continue;
+						}
 
 							//retrieves the rooms adjacent to players current position
 						ArrayList<String> adjRooms = new ArrayList<String>(control.getAdjacent(currentPlayer-1));
-/*
-						System.out.println();
-						System.out.println("Rooms you can currently move to:");
 
-						// displays adjacent rooms to player
-						//System.out.println("size of adjRoom ArrayList: " + adjRooms.size());
-
-						for (int i = 0; i < adjRooms.size(); i++){
-							System.out.println("-" + adjRooms.get(i));
-						}
-						// player will be prompted for a valid room to move to until
-						// this is true
-						//prompt player for room to move to
-						System.out.println("Enter the room you would like to move to: ");
-*/
 						boolean validRoom = false;
-						String room = gameBoard.moveMenu(adjRooms.get(0), adjRooms.get(1), adjRooms.get(2));
+						if (adjRooms.size() == 3){
+							gameBoard.moveMenu(adjRooms.get(0), adjRooms.get(1), adjRooms.get(2));
+						}
+						else if (adjRooms.size() == 4){
+							gameBoard.moveMenu(adjRooms.get(0), adjRooms.get(1), adjRooms.get(2), adjRooms.get(3));
+						}
 
+						while(command.equals("")){
+							System.out.print("");
+							command = gameBoard.getCommand();
+						}
+
+						int roomNum = Integer.valueOf(command);
+						gameBoard.clearCommand();
+
+
+						String room = adjRooms.get(roomNum);
 
 						while(!validRoom){
-							//String room = "";
-							//String room = in.nextLine();
 							// check if given room is valid
          			if (control.getPlayers().get(currentPlayer-1).move(room, adjRooms)) {
            				System.out.println("You have moved to " + control.getPlayers().get(currentPlayer-1).getCurrRoom());
@@ -188,6 +170,7 @@ public class Deadwood{
 										playerLevel = Integer.toString(control.getPlayers().get(currentPlayer-1).getLevel());
 										playerColor = control.getPlayers().get(currentPlayer-1).getColor();
 										gameBoard.setPlayer(playerColor, playerLevel, playerX, playerY, control.getPlayers().get(currentPlayer-1));
+										pos++;
 									}
 									else if (control.getPlayers().get(currentPlayer-1).getCurrRoom().equals("office")){
 										playerX = 9 + positions[pos];
@@ -195,6 +178,7 @@ public class Deadwood{
 										playerLevel = Integer.toString(control.getPlayers().get(currentPlayer-1).getLevel());
 										playerColor = control.getPlayers().get(currentPlayer-1).getColor();
 										gameBoard.setPlayer(playerColor, playerLevel, playerX, playerY, control.getPlayers().get(currentPlayer-1));
+										pos++;
 									}
 									else{
 										playerX = control.getPlayers().get(currentPlayer-1).getCurrScene().getX() + positions[pos];
@@ -207,17 +191,15 @@ public class Deadwood{
 									validRoom = true;
 									moved = true;
         			}
-							/*
-							else {
-									System.out.println("Invalid room! Please enter one of the rooms listed above");
-							}
-							*/
 						}
 						adjRooms.clear();
     			}
 
 					// player chooses to take a role
 					else if (command.equals("work")){
+						gameBoard.clearCommand();
+						command = gameBoard.getCommand();
+
 						//check if the player is in the trailer or the casting office
 						if (control.getPlayers().get(currentPlayer-1).getCurrRoom().equals("trailer") ||
 								control.getPlayers().get(currentPlayer-1).getCurrRoom().equals("office")){
@@ -238,32 +220,81 @@ public class Deadwood{
 						System.out.println("Available roles off the card:");
 						Scene currScene = control.getPlayers().get(currentPlayer-1).getCurrScene();
 						ArrayList<Role> offRoles = currScene.getOffCardRoles();
+						ArrayList<Role> allRoles = new ArrayList<Role>();
 						for (int i = 0; i < offRoles.size(); i++){
 							if (offRoles.get(i).getPlayerNum() == -1){
 								System.out.println("-" + offRoles.get(i).getName() + ", role level: " + offRoles.get(i).getLevel());
+								allRoles.add(offRoles.get(i));
 							}
 						}
 						System.out.println();
 						System.out.println("Available roles on the card:");
 						Card currCard = control.getPlayers().get(currentPlayer-1).getCurrScene().getCard();
-						for (int i = 0; i < currCard.getRoles().size(); i++){
-							if (currCard.getRoles().get(i).getPlayerNum() == -1){
+						ArrayList<Role> onRoles = currCard.getRoles();
+						for (int i = 0; i < onRoles.size(); i++){
+							if (onRoles.get(i).getPlayerNum() == -1){
 								System.out.println("-" + currCard.getRoles().get(i).getName() + ", role level: " + currCard.getRoles().get(i).getLevel());
+								allRoles.add(onRoles.get(i));
 							}
 						}
 						System.out.println();
-						// prompt player for the desired role to work
-						System.out.println("Enter the role you would like to take: ");
-						String role = in.next();
 
-						if (in.hasNext()) {
-							role += in.nextLine();
+						// call the correct workMenu() method depending on the number of available roles
+						int roleLen = allRoles.size();
+						if (roleLen == 1){
+							gameBoard.workMenu(allRoles.get(0).getName());
 						}
+						else if (roleLen == 2){
+							gameBoard.workMenu(allRoles.get(0).getName(), allRoles.get(1).getName());
+						}
+						else if (roleLen == 3){
+							gameBoard.workMenu(allRoles.get(0).getName(), allRoles.get(1).getName(), allRoles.get(2).getName());
+						}
+						else if (roleLen == 4){
+							gameBoard.workMenu(allRoles.get(0).getName(), allRoles.get(1).getName(), allRoles.get(2).getName(), allRoles.get(3).getName());
+						}
+						else if (roleLen == 5){
+							gameBoard.workMenu(allRoles.get(0).getName(), allRoles.get(1).getName(), allRoles.get(2).getName(), allRoles.get(3).getName(), allRoles.get(4).getName());
+						}
+						else if (roleLen == 6){
+							gameBoard.workMenu(allRoles.get(0).getName(), allRoles.get(1).getName(), allRoles.get(2).getName(), allRoles.get(3).getName(), allRoles.get(4).getName(), allRoles.get(5).getName());
+						}
+						else if (roleLen == 7){
+							gameBoard.workMenu(allRoles.get(0).getName(), allRoles.get(1).getName(), allRoles.get(2).getName(), allRoles.get(3).getName(), allRoles.get(4).getName(), allRoles.get(5).getName(), allRoles.get(6).getName());
+						}
+
+						//gameBoard.clearCommand();
+						command = "";
+						while(command.equals("")){
+							System.out.print("");
+							command = gameBoard.getCommand();
+						}
+
+						int roleNum = Integer.valueOf(command);
+						gameBoard.clearCommand();
+						command = gameBoard.getCommand();
+
+						String role = allRoles.get(roleNum).getName();
+
 						// check if the entered role is valid and the player is high enough level
        			if (control.canWork(role, currentPlayer-1)){
          				System.out.println("You are now working this role!");
 								worked = true;
-      			}
+								int roleX;
+								int roleY;
+								Player p = control.getPlayers().get(currentPlayer-1);
+								if (allRoles.get(roleNum).mainOrExtra()){
+									roleX = allRoles.get(roleNum).getX() + p.getCurrScene().getX();
+									roleY = allRoles.get(roleNum).getY() + p.getCurrScene().getY();
+								}
+								else{
+									roleX = allRoles.get(roleNum).getX();
+									roleY = allRoles.get(roleNum).getY();
+								}
+								String c = p.getColor();
+								String l = Integer.toString(p.getLevel());
+								gameBoard.setPlayer(c, l, roleX, roleY, p);
+    				}
 
 						else {
 							System.out.println("Invalid Role.");
