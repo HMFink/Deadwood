@@ -28,6 +28,9 @@ public class Board extends JFrame {
       else if (e.getSource() == bEnd){
         command = "end";
       }
+      else if (e.getSource() == bUpgrade){
+        command = "upgrade";
+      }
     }
 
 
@@ -79,6 +82,35 @@ public class Board extends JFrame {
     }
   }
 
+  class LevelListener implements ActionListener{
+
+    public void actionPerformed(ActionEvent e){
+      // cases for upgrading level
+      if (e.getSource() == level2){
+        command = "2";
+      }
+      else if (e.getSource() == level2){
+        command = "3";
+      }
+      else if (e.getSource() == level4){
+        command = "4";
+      }
+      else if (e.getSource() == level5){
+        command = "5";
+      }
+      else if (e.getSource() == level6){
+        command = "6";
+      }
+      else if (e.getSource() == money){
+        command = "money";
+      }
+      else if (e.getSource() == credit){
+        command = "credit";
+      }
+    }
+
+  }
+
   // Private Attributes
   JLabel boardlabel;
   JLabel cardlabel;
@@ -115,6 +147,13 @@ public class Board extends JFrame {
   static JMenuItem role4;
   static JMenuItem role5;
   static JMenuItem role6;
+  static JMenuItem level2;
+  static JMenuItem level3;
+  static JMenuItem level4;
+  static JMenuItem level5;
+  static JMenuItem level6;
+  static JMenuItem money;
+  static JMenuItem credit;
 
 
   public Board() {
@@ -146,32 +185,32 @@ public class Board extends JFrame {
 
     // Create Action buttons
     bAct = new JButton("ACT");
-    bAct.setBackground(Color.green);
+    bAct.setBackground(Color.cyan);
     bAct.setBounds(icon.getIconWidth()+10,30,150, 20);
     bAct.addMouseListener(new CustomMouseListener());
 
     bRehearse = new JButton("REHEARSE");
-    bRehearse.setBackground(Color.green);
+    bRehearse.setBackground(Color.cyan);
     bRehearse.setBounds(icon.getIconWidth()+10,70,150, 20);
     bRehearse.addMouseListener(new CustomMouseListener());
 
     bMove = new JButton("Move");
-    bMove.setBackground(Color.green);
+    bMove.setBackground(Color.cyan);
     bMove.setBounds(icon.getIconWidth()+10,110,150, 20);
     bMove.addMouseListener(new CustomMouseListener());
 
     bWork = new JButton("Work");
-    bWork.setBackground(Color.green);
+    bWork.setBackground(Color.cyan);
     bWork.setBounds(icon.getIconWidth()+10, 150,150, 20);
     bWork.addMouseListener(new CustomMouseListener());
 
     bUpgrade = new JButton("Upgrade level");
-    bUpgrade.setBackground(Color.green);
+    bUpgrade.setBackground(Color.cyan);
     bUpgrade.setBounds(icon.getIconWidth()+10, 190, 150, 20);
     bUpgrade.addMouseListener(new CustomMouseListener());
 
     bEnd = new JButton("End Turn");
-    bEnd.setBackground(Color.green);
+    bEnd.setBackground(Color.cyan);
     bEnd.setBounds(icon.getIconWidth()+10, 230, 150, 20);
     bEnd.addMouseListener(new CustomMouseListener());
 
@@ -436,6 +475,39 @@ public class Board extends JFrame {
     role5.addActionListener(new MoveListener());
     role6.addActionListener(new MoveListener());
     menu.show(bWork, bWork.getWidth(), bWork.getHeight());
+  }
+
+  public void upgradeMenu(){
+
+    JPopupMenu menu = new JPopupMenu("levels");
+    level2 = new JMenuItem("level 2");
+    level3 = new JMenuItem("level 3");
+    level4 = new JMenuItem("level 4");
+    level5 = new JMenuItem("level 5");
+    level6 = new JMenuItem("level 6");
+    menu.add(level2);
+    menu.add(level3);
+    menu.add(level4);
+    menu.add(level5);
+    menu.add(level6);
+    level2.addActionListener(new LevelListener());
+    level3.addActionListener(new LevelListener());
+    level4.addActionListener(new LevelListener());
+    level5.addActionListener(new LevelListener());
+    level6.addActionListener(new LevelListener());
+    menu.show(bUpgrade, bUpgrade.getWidth(), bUpgrade.getHeight());
+  }
+
+  public void paymentMenu(){
+
+    JPopupMenu payment = new JPopupMenu();
+    money = new JMenuItem("Money");
+    credit = new JMenuItem("Credit");
+    payment.add(money);
+    payment.add(credit);
+    money.addActionListener(new LevelListener());
+    credit.addActionListener(new LevelListener());
+    payment.show(bUpgrade, bUpgrade.getWidth(), bUpgrade.getHeight());
   }
 
 

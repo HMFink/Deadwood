@@ -53,9 +53,9 @@ public class Controller {
 	        System.out.println();
       }
       players.get(0).setColor("v");
-      players.get(1).setColor("c");
+      players.get(1).setColor("o");
       if (numPlayers > 2){
-        players.get(2).setColor("o");
+        players.get(2).setColor("y");
       }
    }// end cratePlayers
 
@@ -81,7 +81,8 @@ public class Controller {
 //
 ///////////////////////////////////////////////////////////////////////
    public void startDay () {
-      for (int i=0; i<playerCount; i++) {
+     sceneCount = 10;
+     for (int i=0; i<playerCount; i++) {
         players.get(i).setCurrRoom("trailer");
       }
       for (int i = 0; i < 10; i++){

@@ -185,7 +185,7 @@ public class Deadwood{
 									}
 									else{
 										playerX = control.getPlayers().get(currentPlayer-1).getCurrScene().getX() + positions[pos];
-										playerY = control.getPlayers().get(currentPlayer-1).getCurrScene().getY();
+										playerY = control.getPlayers().get(currentPlayer-1).getCurrScene().getY() + 120;
 										playerLevel = Integer.toString(control.getPlayers().get(currentPlayer-1).getLevel());
 										playerColor = control.getPlayers().get(currentPlayer-1).getColor();
 										gameBoard.setPlayer(playerColor, playerLevel, playerX, playerY, control.getPlayers().get(currentPlayer-1));
@@ -363,17 +363,47 @@ public class Deadwood{
 								continue;
 							}
 
+							gameBoard.clearCommand();
+							command = gameBoard.getCommand();
+
 							control.displayLevels();
 							System.out.println();
 							System.out.println("Your money: " + control.getPlayers().get(currentPlayer-1).getMoney());
 							System.out.println("Your credits: " + control.getPlayers().get(currentPlayer-1).getCredit());
 							System.out.println("Which level would you like to upgrade to?");
-							int upLevel = in.nextInt();
+
+							gameBoard.upgradeMenu();
+
+							while(command.equals("")){
+								System.out.print("");
+								command = gameBoard.getCommand();
+							}
+
+							int upLevel = Integer.valueOf(command);
+							gameBoard.clearCommand();
+							command = gameBoard.getCommand();
+
 							System.out.println("Would you like to pay with money or credit?");
-							String payment = in.next();
+
+							gameBoard.paymentMenu();
+
+							while(command.equals("")){
+								System.out.print("");
+								command = gameBoard.getCommand();
+							}
+
+							String payment = command;
+							gameBoard.clearCommand();
+							command = gameBoard.getCommand();
 
 							control.getPlayers().get(currentPlayer-1).upgrade(upLevel, payment);
 							gameBoard.updateStats(control.getPlayers().get(currentPlayer-1));
+
+							int playerX = 9;
+							int playerY = 459;
+							String playerLevel = Integer.toString(control.getPlayers().get(currentPlayer-1).getLevel());
+							String playerColor = control.getPlayers().get(currentPlayer-1).getColor();
+							gameBoard.setPlayer(playerColor, playerLevel, playerX, playerY, control.getPlayers().get(currentPlayer-1));
 
     			} else if (command.equals("who")){
 							System.out.println();
