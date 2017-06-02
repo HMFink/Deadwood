@@ -137,7 +137,7 @@ public class Player{
 
 ///////////////////////////////////////////////////////////////////////
 //
-// Returns: 0 if scene not finished, 1 if scene finished
+// Returns: 0 on failure, 1 on success -1 if scene finished
 ///////////////////////////////////////////////////////////////////////
    public int act(){
 
@@ -156,10 +156,10 @@ public class Player{
          scene.removeShotCounter();
          System.out.println("Remaining shot counters on scene: " + scene.getShotCount());
          if (scene.getShotCount() == 0){
-           return 1;
+           return -1;
          }
          else{
-           return 0;
+           return 1;
          }
        }
        else{
@@ -180,10 +180,10 @@ public class Player{
            scene.removeShotCounter();
            System.out.println("Remaining shot counters on scene: " + scene.getShotCount());
            if (scene.getShotCount() == 0){
-             return 1;
+             return -1;
            }
            else{
-             return 0;
+             return 1;
            }
          }
          else{

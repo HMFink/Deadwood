@@ -150,6 +150,9 @@ public Scene getScene(String scene){
    return null;
  }
 
+public int getSceneCount(){
+  return sceneCount;
+}
 ///////////////////////////////////////////////////////////////////////
 //
 ///////////////////////////////////////////////////////////////////////
@@ -464,6 +467,7 @@ public void payout(int currPlayer){
          int xScene = 0;
          String ySceneString = "";
          int yScene = 0;
+         ArrayList<Integer> shotList = new ArrayList<Integer>();
 
          String roleName = "";
          String roleLevel = "";
@@ -478,6 +482,7 @@ public void payout(int currPlayer){
          int createCount = 0;
          boolean roleArea = false;
          boolean sceneArea = true;
+         boolean takeArea = false;
 
          for (int i = 0; i < roomList.getLength(); i++){
 
@@ -487,11 +492,12 @@ public void payout(int currPlayer){
             // name of scene
             if (room.getTagName().equals("set")){
                if (create){
-                  Scene current = new Scene(sceneName, shotCount, neighbors, offCardRoles, xScene, yScene);
+                  Scene current = new Scene(sceneName, shotCount, neighbors, offCardRoles, xScene, yScene, shotList);
                   scenes.add(current);
                   shotCount = 0;
                   offCardRoles.clear();
                   neighbors.clear();
+                  shotList.clear();
                   createCount++;
                   roleArea = false;
                   sceneArea = true;
@@ -504,6 +510,7 @@ public void payout(int currPlayer){
                neighbors.add(neighbor);
             }
             else if (room.getTagName().equals("take")){
+              takeArea = true;
                String tempCount = room.getAttribute("number");
                int currCount = Integer.valueOf(tempCount);
                if (currCount > shotCount){
@@ -518,7 +525,16 @@ public void payout(int currPlayer){
                roleLine = room.getTextContent();
             }
             else if (room.getTagName().equals("area")){
-              if (sceneArea){
+              if (takeArea){
+                Integer x = Integer.valueOf(room.getAttribute("x"));
+                Integer y = Integer.valueOf(room.getAttribute("y"));
+                shotList.add(x);
+                shotList.add(y);
+                takeArea = false;
+                continue;
+              }
+
+              else if (sceneArea){
                 xSceneString = room.getAttribute("x");
                 xScene = Integer.valueOf(xSceneString);
                 ySceneString = room.getAttribute("y");
@@ -547,7 +563,7 @@ public void payout(int currPlayer){
          neighbors.add("General Store");
          neighbors.add("Bank");
          neighbors.add("trailer");
-         Scene current = new Scene(sceneName, shotCount, neighbors, offCardRoles, xScene, yScene);
+         Scene current = new Scene(sceneName, shotCount, neighbors, offCardRoles, xScene, yScene, shotList);
          scenes.add(current);
          offCardRoles.clear();
          neighbors.clear();

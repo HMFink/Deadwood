@@ -59,8 +59,9 @@ public class Deadwood{
 			String cardNum = scenes.get(i).getCard().getCardNum();
 			int x = scenes.get(i).getX();
 			int y = scenes.get(i).getY();
-			gameBoard.addCard(cardNum, x, y);
+			gameBoard.addCard(cardNum, x, y, scenes.get(i));
 		}
+		gameBoard.setShotCounters(scenes);
 
 		toTrailer(control, gameBoard, numPlaying);
 		int day = 1;
@@ -157,6 +158,7 @@ public class Deadwood{
            				System.out.println("You have moved to " + control.getPlayers().get(currentPlayer-1).getCurrRoom());
 									// change the players current scene to the requested scene
 									control.getPlayers().get(currentPlayer-1).setScene(control.getScene(room));
+									gameBoard.flipCard(control.getPlayers().get(currentPlayer-1).getCurrScene());
 
 									int playerX = 0;
 									int playerY= 0;
@@ -326,11 +328,29 @@ public class Deadwood{
 								continue;
 							}
 							// act
-							if (control.getPlayers().get(currentPlayer-1).act() == 1){
+							int actResult = control.getPlayers().get(currentPlayer-1).act();
+							if (actResult == -1){
 								System.out.println("That's a wrap! The scene is over.");
 								control.payout(currentPlayer-1);
 								gameBoard.updateStats(control.getPlayers().get(currentPlayer-1));
 								control.decrementScene();
+								gameBoard.removeCard(control.getPlayers().get(currentPlayer-1).getCurrScene());
+
+								if (control.getSceneCount() <= 1){
+									System.out.println("The day is over!");
+									// place a card on each scene room
+									for (int i = 0; i < sceneLen; i++){
+										String cardNum = scenes.get(i).getCard().getCardNum();
+										int x = scenes.get(i).getX();
+										int y = scenes.get(i).getY();
+										gameBoard.addCard(cardNum, x, y, scenes.get(i));
+									}
+									toTrailer(control, gameBoard, numPlaying);
+									continue;
+								}
+							}
+							if (actResult == 1 || actResult == -1){
+								gameBoard.removeShotCounter(control.getPlayers().get(currentPlayer-1).getCurrScene());
 							}
 							acted = true;
 							gameBoard.updateStats(control.getPlayers().get(currentPlayer-1));

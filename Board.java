@@ -114,6 +114,7 @@ public class Board extends JFrame {
   // Private Attributes
   JLabel boardlabel;
   JLabel cardlabel;
+  static JLabel cardBack;
   JLabel playerlabel;
   JLabel mLabel;
   static JLabel currPlayerLabel;
@@ -121,6 +122,7 @@ public class Board extends JFrame {
   static JLabel moneyLabel;
   static JLabel creditLabel;
   static JLabel rehearsalLabel;
+  static JLabel shotLabel;
 
   // JButtons
   JButton bAct;
@@ -228,8 +230,19 @@ public class Board extends JFrame {
   }
 
 
+  public void removeCard(Scene scene){
+    scene.getImage().setVisible(false);
+  }
+
+  public void flipCard(Scene scene){
+
+    scene.getCardBack().setVisible(false);
+  }
+
+
+
   // places a card on the board at the given x and y coordinates
-  public void addCard (String cardName, int x, int y) {
+  public void addCard (String cardName, int x, int y, Scene scene) {
     cardlabel = new JLabel();
     String card = cardName + ".png";
     ImageIcon cIcon =  new ImageIcon(card);
@@ -237,6 +250,37 @@ public class Board extends JFrame {
     cardlabel.setBounds(x,y,cIcon.getIconWidth(),cIcon.getIconHeight());
     bPane.add(cardlabel,new Integer(2));
     cardlabel.setOpaque(true);
+    scene.setImage(cardlabel);
+
+    cardBack = new JLabel();
+    ImageIcon cbIcon = new ImageIcon("cardBack.png");
+    cardBack.setIcon(cbIcon);
+    cardBack.setBounds(x, y, 205, 115);
+    bPane.add(cardBack, new Integer(3));
+    cardBack.setOpaque(true);
+    scene.setCardBack(cardBack);
+
+  }
+
+  public void setShotCounters(ArrayList<Scene> scenes){
+
+    for (int i = 0; i < scenes.size(); i++){
+      ArrayList<Integer> shotList = scenes.get(i).getShotList();
+      for (int j = 0; j < shotList.size(); j+=2){
+        shotLabel = new JLabel();
+        ImageIcon sIcon = new ImageIcon("shot_counter.png");
+        shotLabel.setIcon(sIcon);
+        shotLabel.setBounds(shotList.get(j)+5, shotList.get(j+1)+5, sIcon.getIconWidth(), sIcon.getIconHeight());
+        bPane.add(shotLabel, new Integer(2));
+        shotLabel.setOpaque(true);
+        scenes.get(i).addShotCounter(shotLabel);
+      }
+    }
+  }
+
+  public void removeShotCounter(Scene scene){
+    scene.getShotImages().get(0).setVisible(false);
+    scene.getShotImages().remove(0);
   }
 
   // moves a player to the given x and y coordinates
