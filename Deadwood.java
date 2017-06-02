@@ -28,26 +28,50 @@ public class Deadwood{
 		Scanner in = new Scanner(System.in);
 		int numPlaying = 0;
 		int currentPlayer = 1;
-
 /*
-		// Enter number of players
-		System.out.println("****************************************************************************");
-    System.out.println("                                 DEADWOOD                                   ");
-    System.out.println("****************************************************************************");
-*/
 		System.out.print("Please enter the number of players (2-3): ");
 		//numPlaying = in.nextInt();
 		System.out.println();
-
+*/
 		JFrame frame = new JFrame("FrameDemo");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		final JOptionPane optionPane = new JOptionPane("Pane\n".
+			JOptionPane.QUESTION_MESSAGE,JOptionPane.YES_NO_OPTION);
+
+		final JDialog dialog = new JDialog(frame, "Click a button", true);
+		dialog.setContentPane(optionPane);
+		dialog.setDefaultCloseOperation(JDialog.EXIT_ON_CLOSE);
+		dialog.addWindowListener(new WindowAdapter() {
+    			public void windowClosing(WindowEvent we) {
+        			setLabel("Thwarted user attempt to close window.");
+    			}
+		});
+		optionPane.addPropertyChangeListener(
+		    new PropertyChangeListener() {
+		        public void propertyChange(PropertyChangeEvent e) {
+		            String prop = e.getPropertyName();
+	
+		            if (dialog.isVisible() 
+		             && (e.getSource() == optionPane)
+		             && (prop.equals(JOptionPane.VALUE_PROPERTY))) {
+		                //If you were going to check something
+		                //before closing the window, you'd do
+		                //it here.
+		                dialog.setVisible(false);
+		            }
+		        }
+		    });
+		dialog.pack();
+		dialog.setVisible(true);
+		
 		Object[] options = {"2 Players", "3 Players"};
 		int n = JOptionPane.showOptionDialog(frame, "Will there be 2 or 3 players?",
 						 "Select the number of players", JOptionPane.YES_NO_OPTION,
 						 JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 						 frame.pack();
 						 frame.setVisible(true);
-		 int value = ((Integer)JOptionPane.getInputValue()).intValue();
+		 int value = ((Integer)optionPane.getInputValue()).intValue();
 		 if (value == JOptionPane.YES_OPTION) {
 				 numPlaying = 2;
 		 } else if (value == JOptionPane.NO_OPTION) {
