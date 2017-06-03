@@ -300,7 +300,7 @@ public class Board extends JFrame {
   // display and update player stats on sidebar
   public void displayStats(Player player){
 
-    currPlayerLabel = new JLabel("Player: " + player.getName());
+    currPlayerLabel = new JLabel("Player: " + player.getIdNum());
     currPlayerLabel.setBounds(1208, 230, 150, 150);
     bPane.add(currPlayerLabel, new Integer(2));
 
@@ -325,7 +325,7 @@ public class Board extends JFrame {
   public void updateStats(Player player){
 
     bPane.remove(currPlayerLabel);
-    currPlayerLabel = new JLabel("Player: " + player.getName());
+    currPlayerLabel = new JLabel("Player: " + player.getIdNum());
     currPlayerLabel.setBounds(1208, 230, 150, 150);
     bPane.add(currPlayerLabel, new Integer(2));
 

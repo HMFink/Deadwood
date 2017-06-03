@@ -7,7 +7,6 @@ import javax.swing.*;
 
 public class Player{
 
-   String name;
    private int idNumber;
    private int money;
    private int credit;
@@ -20,8 +19,7 @@ public class Player{
    private JLabel image;
 
    // player contructor
-   public Player(int num, String name){
-      this.name = name;
+   public Player(int num){
       idNumber = num;
       money = 0;
       credit = 0;
@@ -51,10 +49,6 @@ public class Player{
 
   public String getColor(){
     return color;
-  }
-
-  public String getName(){
-    return name;
   }
 
   public Role getRole() {

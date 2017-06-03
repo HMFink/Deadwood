@@ -100,8 +100,6 @@ public class Deadwood{
 
   		valid = false;
   		//userOptions();
-			System.out.println(control.getPlayers().get(currentPlayer-1).getName() + "'s turn");
-
 
 				while (!valid){
 
@@ -433,7 +431,6 @@ public class Deadwood{
 
     			} else if (command.equals("who")){
 							System.out.println();
-      				System.out.println("Player " + currentPlayer + ": " + control.getPlayers().get(currentPlayer-1).getName());
 							System.out.println("Money: " + control.getPlayers().get(currentPlayer-1).getMoney());
 							System.out.println("Credits: " + control.getPlayers().get(currentPlayer-1).getCredit());
 							System.out.println("Level: " + control.getPlayers().get(currentPlayer-1).getLevel());

@@ -46,9 +46,7 @@ public class Controller {
       String name;
       // Get player names
       for (int i=1; i<=numPlayers; i++){
-          System.out.print("Enter player " + i + "'s name: ");
-	        name = in.next();
-          Player temp = new Player(i, name);
+          Player temp = new Player(i);
 	        players.add(temp);
 	        System.out.println();
       }
@@ -119,7 +117,7 @@ public class Controller {
          winner = i;
        }
      }
-     System.out.println("The winner is " + players.get(winner).getName());
+     System.out.println("The winner is Player " + players.get(winner).getIdNum());
    }
 
 ///////////////////////////////////////////////////////////////////////
@@ -306,7 +304,7 @@ public void payout(int currPlayer){
       if (player != -1){
         player -= 1;
         players.get(player).changeMoney(bonuses[i]);
-        System.out.println(players.get(player).getName() + " received $" + bonuses[i] + " as a scene wrap bonus.");
+        System.out.println("Player " + players.get(player).getIdNum() + " received $" + bonuses[i] + " as a scene wrap bonus.");
         players.get(player).clearRole();
         players.get(player).clearRehearsals();
       }
@@ -319,7 +317,7 @@ public void payout(int currPlayer){
       if (player != -1){
         player -= 1;
         players.get(player).changeMoney(currScene.getOffCardRoles().get(i).getLevel());
-        System.out.println(players.get(player).getName() + " received $" + currScene.getOffCardRoles().get(i).getLevel() + " as a scene wrap bonus.");
+        System.out.println("Player " + players.get(player).getIdNum() + " received $" + currScene.getOffCardRoles().get(i).getLevel() + " as a scene wrap bonus.");
         players.get(player).clearRole();
         players.get(player).clearRehearsals();
       }
